@@ -11,7 +11,8 @@
       modal.style.display = 'block';
       const today = new Date();
 
-      const currentMonday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1);
+      const currentMonday = new Date(today.getFullYear(), today.getMonth(),
+                                                    today.getDate() - today.getDay() + 1 + currentWeek * 7);
 
       const formattedDate = currentMonday.toLocaleDateString('ru-RU', {
           day: '2-digit',
@@ -43,6 +44,18 @@
 
         if (!date || !startTime || !endTime || !description) {
             alert('Fill in the empty fields');
+            return;
+        }
+
+        const dateFormat = /^\d{2}\.\d{2}\.\d{4}$/;
+        if (!dateFormat.test(date)) {
+            alert('Invalid date format: dd.mm.yyyy');
+            return;
+        }
+
+        const timeFormat = /^(([0-1]?[0-9]|2[0-3]):([0-5][0-9]))|24:00$/;
+        if (!timeFormat.test(startTime) || !timeFormat.test(endTime)) {
+            alert('Invalid time format: h:mm или hh:mm');
             return;
         }
 

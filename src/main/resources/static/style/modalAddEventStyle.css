@@ -16,6 +16,14 @@
         padding: 20px;
         border: 1px solid #888;
         width: 30%;
+        margin-bottom: 0px;
+    }
+
+    .description-input{
+        max-height: 250px;
+        min-height: 60px;
+        width: 100%;
+        resize: vertical;
     }
 
     .close-btn {
