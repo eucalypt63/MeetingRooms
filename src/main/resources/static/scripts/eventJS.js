@@ -15,15 +15,14 @@
 
       rooms.forEach((room) => {
         eventDict[room.roomName] = {};
-        console.log(`room.id: ${room.id}`);
       });
 
       eventList.forEach((event) => {
         const eventDate = new Date(event.eventDate);
+        eventDate.setDate(eventDate.getDate() + 1);
+
         const formattedDate = eventDate.toISOString().slice(0, 10);
         const roomId = event.roomId;
-
-        console.log(`roomId: ${event.roomId}`);
 
         const roomName = rooms.find((room) => room.id === roomId).roomName;
 
@@ -51,18 +50,22 @@
 
        eventElement.style.gridRowStart = 1;
        eventElement.style.marginTop = `${(startMinutes / 60) * rowHeight + (startRow - 1) * 60}px`;
-       eventElement.style.height = `${((endRow - startRow) + (endMinutes / 60) - (startMinutes / 60)) * rowHeight - 5}px `; //5px для 30 мин - много
+       eventElement.style.height = `${((endRow - startRow) + (endMinutes / 60) - (startMinutes / 60)) * rowHeight - 5}px `;
        eventElement.style.backgroundColor = getRandomEventColor();//!!!!!!!1
+
+       eventElement.addEventListener('mouseenter', () => {eventElement.style.minHeight = '150px';});
+
+       eventElement.addEventListener('mouseleave', () => {eventElement.style.minHeight = '0px';});
 
        const startTimeString = `${startHour.toString().padStart(2, '0')}:${Math.round(startMinutes * 100)
                        / 100 < 10 ? '0' + Math.round(startMinutes * 100) / 100 : Math.round(startMinutes * 100) / 100}`;
        const endTimeString = `${endHour.toString().padStart(2, '0')}:${Math.round(endMinutes * 100)
                         / 100 < 10 ? '0' + Math.round(endMinutes * 100) / 100 : Math.round(endMinutes * 100) / 100}`;
 
-       eventElement.style.whiteSpace = 'pre-line'; // Добавляем это свойство
+       eventElement.style.whiteSpace = 'pre-line';
        eventElement.textContent = `${startTimeString} - ${endTimeString}\n${eventContent}`;
-        eventElement.style.overflow = 'auto';
-        eventElement.style.wordBreak = 'break-word';
+       eventElement.style.overflow = 'auto';
+       eventElement.style.wordBreak = 'break-word';
 
        eventContainers[index].appendChild(eventElement);
      }
@@ -83,7 +86,8 @@
 
       const currentDate = new Date();
       const currentWeekStart = new Date(currentDate.getFullYear(), currentDate.getMonth(),
-                                      currentDate.getDate() - currentDate.getDay() + (weekOffset * 7));
+                                          currentDate.getDate() - currentDate.getDay() + (weekOffset * 7) + 1);
+
       const currentWeekEnd = new Date(currentWeekStart.getFullYear(), currentWeekStart.getMonth(),
                                       currentWeekStart.getDate() + 6);
 
@@ -94,7 +98,7 @@
         currentDate <= currentWeekEnd;
         currentDate.setDate(currentDate.getDate() + 1)
       ) {
-        const formattedDate = currentDate.toISOString().slice(0, 10);
+        const formattedDate = new Date(currentDate.getTime() + 86400000 ).toISOString().slice(0, 10);
         if (eventDict[selectedRoomName] && eventDict[selectedRoomName][formattedDate]) {
           eventDict[selectedRoomName][formattedDate].forEach((event) => {
             const [startHour, startMinute] = event.startEventTime.split(':').map(Number);

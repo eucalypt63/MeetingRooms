@@ -1,9 +1,6 @@
 package com.example.postgresql.controller;
 
-import com.example.postgresql.model.Event;
 import com.example.postgresql.model.User;
-import com.example.postgresql.repository.EventRepository;
-import com.example.postgresql.repository.RoomRepository;
 import com.example.postgresql.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

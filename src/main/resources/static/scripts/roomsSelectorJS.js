@@ -6,7 +6,6 @@
 
     let selectedRoom = rooms[0].roomName;
 
-    // Заполнение списка комнат
     rooms.forEach(room => {
       const roomItem = document.createElement('li');
       roomItem.textContent = room.roomName;

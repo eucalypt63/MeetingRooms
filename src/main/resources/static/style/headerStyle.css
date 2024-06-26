@@ -67,6 +67,9 @@
       --timeHeight: 60px;
     }
 
+    .add-event-btn {
+        cursor: pointer;
+    }
 
 
     .room-selector {
