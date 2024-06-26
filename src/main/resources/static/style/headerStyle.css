@@ -1,0 +1,122 @@
+    * {box-sizing: border-box;}
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      background-color: #3bffd2;
+      padding: 10px 10px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .wrap-logo {
+      display: flex;
+      align-items: center;
+
+    }
+
+    header a {
+      color: #212121;
+      padding: 12px;
+      text-decoration: none;
+      font-size: 18px;
+      border-radius: 4px;
+    }
+
+    header a.logo {
+      font-size: 25px;
+      font-weight: bold;
+      height: 45px;
+      width: 200px;
+      padding-bottom: 0px;
+      padding-top: 7px;
+      text-align: center;
+    }
+
+    header a.active {
+      background-color: #2de8fb;
+    }
+
+    .center-buttons {
+    display: flex;
+    align-items: center;
+    }
+
+    .center-buttons button,
+    .center-buttons .current-week {
+        margin: 0 10px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      }
+
+       :root {
+      --numHours: 24;
+      --timeHeight: 60px;
+    }
+
+
+
+    .room-selector {
+      position: relative;
+      display: inline-block;
+    }
+
+    .room-select-btn {
+      background-color: #2de8fb;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      border-radius: 4px;
+    }
+
+    .room-dropdown {
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      max-height: 300px; /* Устанавливаем максимальную высоту */
+      overflow-y: auto;
+    }
+
+    .room-dropdown.hidden {
+      display: none;
+    }
+
+    .room-dropdown li {
+      color: black;
+      padding: 5px 16px;
+      text-decoration: none;
+      display: block;
+      cursor: pointer;
+    }
+
+    .room-list {
+     padding: 0px;
+    }
+
+    .room-dropdown li:hover {
+      background-color: #ddd;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+    }

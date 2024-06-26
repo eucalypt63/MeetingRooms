@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="Calendar"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/style/headerStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/style/calendarStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/style/modalAddEventStyle.css}">
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div class="wrap-logo">
+            <a class="logo"></a>
+        </div>
+        <div class="room-selector">
+            <button class="room-select-btn">Select Room</button>
+            <div class="room-dropdown hidden">
+                <ul class="room-list"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="center-buttons">
+        <button class="prev-week">Next week</button>
+        <span class="current-week"></span>
+        <button class="next-week">Previous week</button>
+    </div>
+    <nav>
+        <button class="add-event-btn">Add Event</button>
+        <a class="active" th:href="@{/logout}">Logout</a>
+    </nav>
+</header>
+
+
+<div class="modal" id="add-event-modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Add Event</h2>
+        <div class="input-fields">
+            <input type="text" placeholder="dd.mm.yyyy" class="date-input">
+            <div class="time-input-container">
+                <input type="text" placeholder="Start time:time" class="start-time-input">
+                <input type="text" placeholder="End time:time" class="end-time-input">
+            </div>
+            <textarea placeholder="Description" class="description-input"></textarea>
+        </div>
+        <button class="add-btn">Add</button>
+    </div>
+</div>
+
+<div class="calendar">
+    <div class="timeline">
+        <div class="spacer"></div>
+        <div class="time-marker">0 AM</div>
+        <div class="time-marker">1 AM</div>
+        <div class="time-marker">2 AM</div>
+        <div class="time-marker">3 AM</div>
+        <div class="time-marker">4 AM</div>
+        <div class="time-marker">5 AM</div>
+        <div class="time-marker">6 AM</div>
+        <div class="time-marker">7 AM</div>
+        <div class="time-marker">8 AM</div>
+        <div class="time-marker">9 AM</div>
+        <div class="time-marker">10 AM</div>
+        <div class="time-marker">11 AM</div>
+        <div class="time-marker">12 AM</div>
+        <div class="time-marker">1 PM</div>
+        <div class="time-marker">2 PM</div>
+        <div class="time-marker">3 PM</div>
+        <div class="time-marker">4 PM</div>
+        <div class="time-marker">5 PM</div>
+        <div class="time-marker">6 PM</div>
+        <div class="time-marker">7 PM</div>
+        <div class="time-marker">8 PM</div>
+        <div class="time-marker">9 PM</div>
+        <div class="time-marker">10 PM</div>
+        <div class="time-marker">11 PM</div>
+        <div class="time-marker">12 PM</div>
+    </div>
+    <div class="days">
+        <div class="day mon">
+            <div class="date">
+                <p class="date-day">Monday</p>
+                <p class="date-num">9</p>
+            </div>
+            <div class="events">
+
+            </div>
+        </div>
+        <div class="day tues">
+            <div class="date">
+                <p class="date-day">Tuesday</p>
+                <p class="date-num">12</p>
+            </div>
+            <div class="events">
+
+            </div>
+        </div>
+        <div class="day wed">
+            <div class="date">
+                <p class="date-day">Wednesday</p>
+                <p class="date-num">11</p>
+            </div>
+            <div class="events">
+
+            </div>
+        </div>
+        <div class="day thurs">
+            <div class="date">
+                <p class="date-day">Thursday</p>
+                <p class="date-num">12</p>
+            </div>
+            <div class="events">
+
+            </div>
+        </div>
+        <div class="day fri">
+            <div class="date">
+                <p class="date-day">Friday</p>
+                <p class="date-num">13</p>
+            </div>
+            <div class="events">
+
+            </div>
+        </div>
+        <div class="day sat">
+            <div class="date">
+                <p class="date-day">Saturday</p>
+                <p class="date-num">14</p>
+            </div>
+            <div class="events">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="eventList" th:attr="data-events=${eventListJson}"></div>
+<div id="roomList" th:attr="data-events=${roomListJson}"></div>
+<script src="scripts/modalAddEventJS.js"></script>
+<script src="scripts/paginationJS.js"></script>
+<script src="scripts/eventJS.js"></script>
+<script src="scripts/roomsSelectorJS.js"></script>
+<script>
+    getEvents(currentWeek);
+    CurrentWeek(currentWeek);
+    getDate(currentWeek);
+</script>
+</body>
+</html>
