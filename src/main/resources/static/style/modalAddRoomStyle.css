@@ -1,0 +1,19 @@
+.close-btn-room {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.add-room {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.room-status-dropdown{
+    padding: 10px;
+    font-size: 16px;
+}

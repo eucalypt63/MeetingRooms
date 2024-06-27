@@ -71,6 +71,9 @@
         cursor: pointer;
     }
 
+    .add-room-btn {
+        cursor: pointer;
+    }
 
     .room-selector {
       position: relative;

@@ -1,7 +1,7 @@
     const addEventBtn = document.querySelector('.add-event-btn');
     const modal = document.getElementById('add-event-modal');
-    const closeBtn = document.querySelector('.close-btn');
-    const addBtn = document.querySelector('.add-btn');
+    const closeBtn = document.querySelector('.close-btn-event');
+    const addBtn = document.querySelector('.add-event');
     const dateInput = document.querySelector('.date-input');
     const startTimeInput = document.querySelector('.start-time-input');
     const endTimeInput = document.querySelector('.end-time-input');
@@ -44,7 +44,7 @@
         const description = descriptionInput.value;
 
         if (!date || !startTime || !endTime || !description) {
-            alert('Fill in the empty fields');
+            alert('Fill the empty fields');
             return;
         }
 
@@ -90,7 +90,7 @@
         }
         const logoText = document.querySelector('.logo').textContent;
         const roomname = logoText;
-        fetch('/calendar', {
+        fetch('/calendarAddEvent', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -122,4 +122,3 @@
         closeModal();
       }
     });
-

@@ -1,12 +1,14 @@
 package com.example.postgresql.controller;
 
 import com.example.postgresql.DTO.EventDTO;
+import com.example.postgresql.DTO.RoomDTO;
 import com.example.postgresql.model.Event;
 import com.example.postgresql.model.Room;
 import com.example.postgresql.model.User;
 import com.example.postgresql.repository.RoomRepository;
 import com.example.postgresql.repository.UserRepository;
 import com.example.postgresql.service.EventService;
+import com.example.postgresql.service.RoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +26,16 @@ public class Calendar {
     private final EventRepository eventRepository;
     private final RoomRepository roomRepository;
     private final EventService eventService;
+    private final RoomService roomService;
 
     public Calendar(EventRepository eventRepository,
                     RoomRepository roomRepository,
-                    EventService eventService) {
+                    EventService eventService,
+                    RoomService roomService) {
         this.eventRepository = eventRepository;
         this.roomRepository = roomRepository;
         this.eventService = eventService;
+        this.roomService = roomService;
     }
 
     @GetMapping("/calendar")
@@ -51,9 +56,16 @@ public class Calendar {
         }
     }
 
-    @PostMapping("/calendar")
+    @PostMapping("/calendarAddEvent")
     public ResponseEntity<Void> createEvent(HttpSession session, @RequestBody EventDTO eventDTO) {
         eventService.saveEvent(session, eventDTO);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/calendarAddRoom")
+    public ResponseEntity<Void> createRoom(HttpSession session, @RequestBody RoomDTO roomDTO) {
+        roomService.saveEvent(session, roomDTO);
 
         return ResponseEntity.ok().build();
     }

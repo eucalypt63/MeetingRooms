@@ -9,6 +9,4 @@ public class EventDTO {
     private String endTime;
     private String description;
     private String roomname;
-
-    // Getter и Setter
 }
