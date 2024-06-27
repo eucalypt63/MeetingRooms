@@ -2,6 +2,7 @@
 
     const eventListElement = document.getElementById('eventList');
     const eventList = JSON.parse(eventListElement.getAttribute('data-events'));
+    eventListElement.remove();
 
     const roomListJson = document.getElementById('roomList').dataset.events;
     const rooms = JSON.parse(roomListJson);
@@ -53,9 +54,15 @@
        eventElement.style.height = `${((endRow - startRow) + (endMinutes / 60) - (startMinutes / 60)) * rowHeight - 5}px `;
        eventElement.style.backgroundColor = getRandomEventColor();//!!!!!!!1
 
-       eventElement.addEventListener('mouseenter', () => {eventElement.style.minHeight = '150px';});
+       eventElement.addEventListener('mouseenter', () => {
+           eventElement.style.minHeight = '150px';
+           eventElement.style.zIndex = '100';
+       });
 
-       eventElement.addEventListener('mouseleave', () => {eventElement.style.minHeight = '0px';});
+       eventElement.addEventListener('mouseleave', () => {
+           eventElement.style.minHeight = '0px';
+           eventElement.style.zIndex = '0';
+       });
 
        const startTimeString = `${startHour.toString().padStart(2, '0')}:${Math.round(startMinutes * 100)
                        / 100 < 10 ? '0' + Math.round(startMinutes * 100) / 100 : Math.round(startMinutes * 100) / 100}`;
@@ -77,39 +84,40 @@
      }
 
     function getEvents(weekOffset) {
-      for (let i = 0; i < eventContainers.length; i++) {
-        const eventContainer = eventContainers[i];
-        while (eventContainer.firstChild) {
-          eventContainer.removeChild(eventContainer.firstChild);
-        }
+      if (rooms.length > 0) {
+          for (let i = 0; i < eventContainers.length; i++) {
+              const eventContainer = eventContainers[i];
+              while (eventContainer.firstChild) {
+                  eventContainer.removeChild(eventContainer.firstChild);
+              }
+          }
+
+          const currentDate = new Date();
+          const currentWeekStart = new Date(currentDate.getFullYear(), currentDate.getMonth(),
+              currentDate.getDate() - currentDate.getDay() + (weekOffset * 7) + 1);
+
+          const currentWeekEnd = new Date(currentWeekStart.getFullYear(), currentWeekStart.getMonth(),
+              currentWeekStart.getDate() + 6);
+
+          const selectedRoomName = document.querySelector('.wrap-logo .logo').textContent.trim();
+
+          for (
+              let currentDate = new Date(currentWeekStart.getTime());
+              currentDate <= currentWeekEnd;
+              currentDate.setDate(currentDate.getDate() + 1)
+          ) {
+              const formattedDate = new Date(currentDate.getTime() + 86400000).toISOString().slice(0, 10);
+              if (eventDict[selectedRoomName] && eventDict[selectedRoomName][formattedDate]) {
+                  eventDict[selectedRoomName][formattedDate].forEach((event) => {
+                      const [startHour, startMinute] = event.startEventTime.split(':').map(Number);
+                      const [stopHour, stopMinute] = event.stopEventTime.split(':').map(Number);
+
+                      const startEventTime = startHour + startMinute / 60;
+                      const stopEventTime = stopHour + stopMinute / 60;
+
+                      createEvent(startEventTime, stopEventTime, currentDate.getDay() - 1, event.eventContent);
+                  });
+              }
+          }
       }
-
-      const currentDate = new Date();
-      const currentWeekStart = new Date(currentDate.getFullYear(), currentDate.getMonth(),
-                                          currentDate.getDate() - currentDate.getDay() + (weekOffset * 7) + 1);
-
-      const currentWeekEnd = new Date(currentWeekStart.getFullYear(), currentWeekStart.getMonth(),
-                                      currentWeekStart.getDate() + 6);
-
-      const selectedRoomName = document.querySelector('.wrap-logo .logo').textContent.trim();
-
-      for (
-        let currentDate = new Date(currentWeekStart.getTime());
-        currentDate <= currentWeekEnd;
-        currentDate.setDate(currentDate.getDate() + 1)
-      ) {
-        const formattedDate = new Date(currentDate.getTime() + 86400000 ).toISOString().slice(0, 10);
-        if (eventDict[selectedRoomName] && eventDict[selectedRoomName][formattedDate]) {
-          eventDict[selectedRoomName][formattedDate].forEach((event) => {
-            const [startHour, startMinute] = event.startEventTime.split(':').map(Number);
-            const [stopHour, stopMinute] = event.stopEventTime.split(':').map(Number);
-
-            const startEventTime = startHour + startMinute / 60;
-            const stopEventTime = stopHour + stopMinute / 60;
-
-            createEvent(startEventTime, stopEventTime, currentDate.getDay() - 1, event.eventContent);
-          });
-        }
-      }
-      eventListElement.remove();
     }

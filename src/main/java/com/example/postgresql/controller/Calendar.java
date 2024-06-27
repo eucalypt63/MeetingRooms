@@ -1,15 +1,20 @@
 package com.example.postgresql.controller;
 
+import com.example.postgresql.DTO.EventDTO;
 import com.example.postgresql.model.Event;
 import com.example.postgresql.model.Room;
 import com.example.postgresql.repository.RoomRepository;
 import com.example.postgresql.repository.UserRepository;
+import com.example.postgresql.service.EventService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import com.example.postgresql.repository.EventRepository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,10 +22,12 @@ import javax.servlet.http.HttpSession;
 public class Calendar {
     private final EventRepository eventRepository;
     private final RoomRepository roomRepository;
+    private final EventService eventService;
 
-    public Calendar(UserRepository userRepository, EventRepository eventRepository, RoomRepository roomRepository) {
+    public Calendar(UserRepository userRepository, EventRepository eventRepository, RoomRepository roomRepository, EventService eventService) {
         this.eventRepository = eventRepository;
         this.roomRepository = roomRepository;
+        this.eventService = eventService;
     }
 
     @GetMapping("/calendar")
@@ -40,6 +47,13 @@ public class Calendar {
         else {
             return "redirect:/login";
         }
+    }
+
+    @PostMapping("/calendar")
+    public ResponseEntity<Void> createEvent(HttpSession session, @RequestBody EventDTO eventDTO) {
+        eventService.saveEvent(session, eventDTO);
+
+        return ResponseEntity.ok().build();
     }
 
 }

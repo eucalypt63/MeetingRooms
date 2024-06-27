@@ -4,7 +4,12 @@
 
     const logoElement = document.querySelector('.wrap-logo .logo');
 
-    let selectedRoom = rooms[0].roomName;
+    let selectedRoom;
+    if (rooms.length === 0) {
+        selectedRoom = "NoRooms";
+    } else {
+        selectedRoom = rooms[0].roomName;
+    }
 
     rooms.forEach(room => {
       const roomItem = document.createElement('li');

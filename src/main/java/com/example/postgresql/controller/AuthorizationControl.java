@@ -29,6 +29,7 @@ public class AuthorizationControl {
 
         if (user != null && user.getPassword().equals(password)) {
             session.setAttribute("username", username);
+
             return "redirect:/calendar";
         } else {
             //session.setAttribute("error", "Неверное имя пользователя или пароль");

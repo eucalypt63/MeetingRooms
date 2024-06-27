@@ -36,6 +36,7 @@
       descriptionInput.value = '';
     }
 
+    //Слишком объёмная функция, нужно разделить (╯▔皿▔)╯
     function addEvent() {
         const date = dateInput.value;
         const startTime = startTimeInput.value;
@@ -87,6 +88,30 @@
                 }
             }
         }
+        const logoText = document.querySelector('.logo').textContent;
+        const desiredRoom = rooms.find(room => room.roomName === logoText);
+        const roomId = desiredRoom.id;
+
+        fetch('/calendar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ formattedDate, startTime, endTime, description, roomId })
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Закрыть модальное окно
+                    closeModal();
+                } else {
+                    alert('Error creating event, bed response');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error creating event');
+            });
+        //обновить страницу !!! ヾ(≧▽≦*)o
         closeModal();
     }
 
