@@ -3,6 +3,7 @@ package com.example.postgresql.controller;
 import com.example.postgresql.DTO.EventDTO;
 import com.example.postgresql.model.Event;
 import com.example.postgresql.model.Room;
+import com.example.postgresql.model.User;
 import com.example.postgresql.repository.RoomRepository;
 import com.example.postgresql.repository.UserRepository;
 import com.example.postgresql.service.EventService;
@@ -24,7 +25,9 @@ public class Calendar {
     private final RoomRepository roomRepository;
     private final EventService eventService;
 
-    public Calendar(UserRepository userRepository, EventRepository eventRepository, RoomRepository roomRepository, EventService eventService) {
+    public Calendar(EventRepository eventRepository,
+                    RoomRepository roomRepository,
+                    EventService eventService) {
         this.eventRepository = eventRepository;
         this.roomRepository = roomRepository;
         this.eventService = eventService;
@@ -32,16 +35,15 @@ public class Calendar {
 
     @GetMapping("/calendar")
     public String showCalendar(HttpSession session, Model model) throws JsonProcessingException {
-        String username = (String) session.getAttribute("username");
-        if (username != null) {
-
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
             Iterable<Event> events = eventRepository.findAll();
             model.addAttribute("eventListJson", new ObjectMapper().writeValueAsString(events));
 
             Iterable<Room> rooms = roomRepository.findAll();
             model.addAttribute("roomListJson", new ObjectMapper().writeValueAsString(rooms));
 
-            model.addAttribute("username", username);
+            model.addAttribute("user", user);
             return "calendar";
         }
         else {

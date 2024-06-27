@@ -89,29 +89,27 @@
             }
         }
         const logoText = document.querySelector('.logo').textContent;
-        const desiredRoom = rooms.find(room => room.roomName === logoText);
-        const roomId = desiredRoom.id;
-
+        const roomname = logoText;
         fetch('/calendar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ formattedDate, startTime, endTime, description, roomId })
+            body: JSON.stringify({ formattedDate, startTime, endTime, description, roomname })
         })
             .then(response => {
                 if (response.ok) {
-                    // Закрыть модальное окно
-                    closeModal();
+                    closeModal(); //Check: добавить вывбод сообщения успешного добавления события
+                    window.location.href = "/calendar";
                 } else {
                     alert('Error creating event, bed response');
+                    window.location.href = "/calendar";
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('Error creating event');
             });
-        //обновить страницу !!! ヾ(≧▽≦*)o
         closeModal();
     }
 

@@ -27,12 +27,10 @@ public class AuthorizationControl {
                         HttpSession session) {
         User user = userRepository.findByUsername(username);
 
-        if (user != null && user.getPassword().equals(password)) {
-            session.setAttribute("username", username);
-
+        if (user != null && user.getPassword().equals(password)) { //Spring Security: доработать
+            session.setAttribute("user", user);
             return "redirect:/calendar";
         } else {
-            //session.setAttribute("error", "Неверное имя пользователя или пароль");
             return "redirect:/login";
         }
     }

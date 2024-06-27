@@ -70,7 +70,7 @@
                         / 100 < 10 ? '0' + Math.round(endMinutes * 100) / 100 : Math.round(endMinutes * 100) / 100}`;
 
        eventElement.style.whiteSpace = 'pre-line';
-       eventElement.textContent = `${startTimeString} - ${endTimeString}\n${eventContent}`;
+       eventElement.textContent = `Time: ${startTimeString} - ${endTimeString}\n${eventContent}`;
        eventElement.style.overflow = 'auto';
        eventElement.style.wordBreak = 'break-word';
 
