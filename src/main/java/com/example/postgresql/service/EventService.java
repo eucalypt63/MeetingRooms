@@ -6,7 +6,6 @@ import com.example.postgresql.model.Room;
 import com.example.postgresql.model.User;
 import com.example.postgresql.repository.EventRepository;
 import com.example.postgresql.repository.RoomRepository;
-import com.example.postgresql.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -24,7 +23,7 @@ public class EventService {
 
     public void saveEvent(HttpSession session, EventDTO eventDTO) {
         User user = (User) session.getAttribute("user");
-        Room room = roomRepository.findByRoomName(eventDTO.getRoomname());
+        Room room = roomRepository.findByRoomName(eventDTO.getRoomName());
 
         Event event = new Event();
 

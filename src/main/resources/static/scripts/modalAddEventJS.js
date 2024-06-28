@@ -6,8 +6,10 @@
     const startTimeInput = document.querySelector('.start-time-input');
     const endTimeInput = document.querySelector('.end-time-input');
     const descriptionInput = document.querySelector('.description-input');
+    let roomName = "";
 
     function openModal() {
+        roomName = document.querySelector('.logo').textContent;
       modal.style.display = 'block';
       const today = new Date();
 
@@ -60,7 +62,6 @@
             return;
         }
 
-        const roomName = document.querySelector('.logo').textContent;
         const [day, month, year] = date.split('.');
         const formattedDate = `${year}-${month}-${day}`;
 
@@ -88,18 +89,17 @@
                 }
             }
         }
-        const logoText = document.querySelector('.logo').textContent;
-        const roomname = logoText;
+
         fetch('/calendarAddEvent', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ formattedDate, startTime, endTime, description, roomname })
+            body: JSON.stringify({ formattedDate, startTime, endTime, description, roomName })
         })
             .then(response => {
                 if (response.ok) {
-                    closeModal(); //Check: добавить вывбод сообщения успешного добавления события
+                    closeModal();
                     window.location.href = "/calendar";
                 } else {
                     alert('Error creating event, bed response');

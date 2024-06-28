@@ -8,5 +8,5 @@ public class EventDTO {
     private String startTime;
     private String endTime;
     private String description;
-    private String roomname;
+    private String roomName;
 }

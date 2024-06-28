@@ -71,6 +71,10 @@
         cursor: pointer;
     }
 
+    .settings-room-btn {
+        cursor: pointer;
+    }
+
     .add-room-btn {
         cursor: pointer;
     }

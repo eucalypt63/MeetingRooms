@@ -6,6 +6,7 @@
 
     const roomListJson = document.getElementById('roomList').dataset.events;
     const rooms = JSON.parse(roomListJson);
+    document.getElementById('roomList').remove();
 
     const eventDict = createEventDictionary(eventList, rooms);
 
@@ -57,23 +58,34 @@
        eventElement.addEventListener('mouseenter', () => {
            eventElement.style.minHeight = '150px';
            eventElement.style.zIndex = '100';
+           settingsIcon.style.display = 'block';
        });
 
        eventElement.addEventListener('mouseleave', () => {
            eventElement.style.minHeight = '0px';
            eventElement.style.zIndex = '0';
+           settingsIcon.style.display = 'none';
        });
 
-       const startTimeString = `${startHour.toString().padStart(2, '0')}:${Math.round(startMinutes * 100)
-                       / 100 < 10 ? '0' + Math.round(startMinutes * 100) / 100 : Math.round(startMinutes * 100) / 100}`;
-       const endTimeString = `${endHour.toString().padStart(2, '0')}:${Math.round(endMinutes * 100)
-                        / 100 < 10 ? '0' + Math.round(endMinutes * 100) / 100 : Math.round(endMinutes * 100) / 100}`;
+         const startTimeString = `${startHour}:${Math.round(startMinutes).toString().padStart(2, '0')}`;
+         const endTimeString = `${endHour}:${Math.round(endMinutes).toString().padStart(2, '0')}`;
 
        eventElement.style.whiteSpace = 'pre-line';
        eventElement.textContent = `Time: ${startTimeString} - ${endTimeString}\n${eventContent}`;
        eventElement.style.overflow = 'auto';
        eventElement.style.wordBreak = 'break-word';
 
+       const settingsIcon = document.createElement('i');
+       settingsIcon.classList.add('fa', 'fa-cog');
+       settingsIcon.addEventListener('click', () => {
+           eventElement.style.zIndex = '0';
+           const today = new Date();
+           const day = new Date(today.getTime() - (today.getDay() - 1 - (currentWeek * 7) - index) * 86400000);
+
+           openSetModal(day, startTimeString, endTimeString, eventContent);
+       });
+
+       eventElement.appendChild(settingsIcon);
        eventContainers[index].appendChild(eventElement);
      }
 

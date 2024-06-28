@@ -6,7 +6,6 @@ import com.example.postgresql.model.Event;
 import com.example.postgresql.model.Room;
 import com.example.postgresql.model.User;
 import com.example.postgresql.repository.RoomRepository;
-import com.example.postgresql.repository.UserRepository;
 import com.example.postgresql.service.EventService;
 import com.example.postgresql.service.RoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -70,4 +69,9 @@ public class Calendar {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/calendarDeleteEvent")
+    public ResponseEntity<Void> deleteEvent(@RequestBody Long eventId) {
+        eventRepository.deleteById(eventId);
+        return ResponseEntity.ok().build();
+    }
 }

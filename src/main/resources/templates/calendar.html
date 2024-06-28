@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -6,6 +7,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/style/calendarStyle.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/style/modalAddEventStyle.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/style/modalAddRoomStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/style/modalSettingsEventStyle.css}">
 </head>
 <body>
 <header>
@@ -20,6 +22,7 @@
             </div>
         </div>
         <a class="add-room-btn">Add Room</a>
+        <a class="settings-room-btn">Room settings</a>
     </div>
     <div class="center-buttons">
         <button class="prev-week">Next week</button>
@@ -31,7 +34,6 @@
         <a class="active" th:href="@{/logout}">Logout</a>
     </nav>
 </header>
-
 
 <div class="modal" id="add-event-modal">
     <div class="modal-content">
@@ -46,6 +48,22 @@
             <textarea placeholder="Description" class="description-input"></textarea>
         </div>
         <button class="add-event">Add</button>
+    </div>
+</div>
+
+<div class="modal" id="setting-event-modal">
+    <div class="modal-content">
+        <span class="close-setting-btn-event">&times;</span>
+        <h2>Event settings</h2>
+        <div class="input-fields">
+            <input type="text" placeholder="dd.mm.yyyy" class="settings-date-input" readonly>
+            <div class="time-input-container">
+                <input type="text" placeholder="Start time:time" class="settings-start-time-input" readonly>
+                <input type="text" placeholder="End time:time" class="settings-end-time-input" readonly>
+            </div>
+            <textarea placeholder="Description" class="settings-description-input" readonly></textarea>
+        </div>
+            <button class="delete-event">Delete Event</button>
     </div>
 </div>
 
@@ -157,6 +175,7 @@
 <script src="scripts/eventJS.js"></script>
 <script src="scripts/roomsSelectorJS.js"></script>
 <script src="scripts/modalAddRoomJS.js"></script>
+<script src="scripts/modalSettingsEventJS.js"></script>
 <script>
     getDate(currentWeek);
     CurrentWeek(currentWeek);
