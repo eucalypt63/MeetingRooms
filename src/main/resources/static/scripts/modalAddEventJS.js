@@ -9,7 +9,7 @@
     let roomName = "";
 
     function openModal() {
-      roomName = selectedRoom;
+      roomName = curRoom.roomName;
       modal.style.display = 'block';
       const today = new Date();
 

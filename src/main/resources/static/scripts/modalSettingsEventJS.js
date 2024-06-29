@@ -9,13 +9,17 @@ let roomNameSet = "";
 let eventId;
 
 function openSetModal(day, startTimeString, endTimeString, eventContent) {
-    roomNameSet = selectedRoom;
+    roomNameSet = curRoom.roomName;
     modalSet.style.display = 'block';
-    dateInputSet.value = day.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+    const dayMinus = new Date(day);
+    dayMinus.setDate(dayMinus.getDate() - 1);
+    dayMinus.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+    dateInputSet.value = dayMinus.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
     startTimeInputSet.value = startTimeString;
     endTimeInputSet.value = endTimeString;
     descriptionInputSet.value = eventContent;
-    console.log(startTimeString);
 
     const [hoursSettingsEventStart, minutesSettingsEventStart] = startTimeString.split(':').map(Number);
     const [hoursSettingsEventStop, minutesSettingsEventStop] = endTimeString.split(':').map(Number);
@@ -70,8 +74,6 @@ function deleteEvent() {
         });
     closeModal();
 }
-
-
 
 closeBtnSet.addEventListener('click', closeModal);
 deleteEventBtn.addEventListener('click', deleteEvent)

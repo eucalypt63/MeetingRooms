@@ -14,7 +14,6 @@
     const UserDict = createUserDictionary(users);
 
     const curUserJson = document.getElementById('CurUser').dataset.events;
-    //const curUser = JSON.parse(curUserJson);
     document.getElementById('CurUser').remove();
 
     const eventDict = createEventDictionary(eventList, rooms);
@@ -24,7 +23,7 @@
     function createUserDictionary(userListJson)
     {
         return userListJson.reduce((dict, user) => {
-            dict[user.id] = user.username;
+            dict[user.id] = user;
             return dict;
         }, {});
     }
@@ -69,8 +68,8 @@
 
        eventElement.style.gridRowStart = 1;
        eventElement.style.marginTop = `${(startMinutes / 60) * rowHeight + (startRow - 1) * 60}px`;
-       eventElement.style.height = `${((endRow - startRow) + (endMinutes / 60) - (startMinutes / 60)) * rowHeight - 5}px `;
-       eventElement.style.backgroundColor = getRandomEventColor();//!!!!!!!1
+       eventElement.style.height = `${((endRow - startRow) + (endMinutes / 60) - (startMinutes / 60)) * rowHeight - 4}px `;
+       eventElement.style.backgroundColor = getRandomEventColor();//!!!!!!!
 
        eventElement.addEventListener('mouseenter', () => {
            eventElement.style.minHeight = '150px';
@@ -89,7 +88,9 @@
 
 
        eventElement.style.whiteSpace = 'pre-line';
-       eventElement.textContent = `Time: ${startTimeString} - ${endTimeString}\nOrganizer: ${UserDict[userId]}\n\n${eventContent}`;
+       eventElement.textContent = `Time: ${startTimeString} - ${endTimeString}
+                                   Organizer: ${UserDict[userId].username}\n
+                                   ${eventContent}`;
        eventElement.style.overflow = 'auto';
        eventElement.style.wordBreak = 'break-word';
 
@@ -98,7 +99,7 @@
        settingsIcon.addEventListener('click', () => {
            eventElement.style.zIndex = '0';
            const today = new Date();
-           const day = new Date(today.getTime() - (today.getDay() - 1 - (currentWeek * 7) - index) * 86400000);
+           const day = new Date(today.getTime() - (today.getDay() - 2 - (currentWeek * 7) - index) * 86400000);
 
            openSetModal(day, startTimeString, endTimeString, eventContent);
        });
@@ -129,7 +130,7 @@
           const currentWeekEnd = new Date(currentWeekStart.getFullYear(), currentWeekStart.getMonth(),
               currentWeekStart.getDate() + 6);
 
-          const selectedRoomName = selectedRoom;
+          const selectedRoomName = curRoom.roomName;
 
           for (
               let currentDate = new Date(currentWeekStart.getTime());

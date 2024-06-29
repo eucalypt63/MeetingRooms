@@ -1,0 +1,48 @@
+.close-setting-btn-room {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.room-setting-status-dropdown{
+    padding: 10px;
+    font-size: 16px;
+}
+
+.delete-room {
+    background-color: #8B0000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.save-changes-room {
+    background-color: #0448aa;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.room-actions {
+    display: flex;
+    align-items: center;
+}
+
+.room-actions button {
+    margin-right: 10px;
+}
+
+.room-settings-buttons {
+    display: flex;
+    align-items: center;
+}

@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class Calendar {
@@ -58,6 +57,7 @@ public class Calendar {
             UserDTO curUserDTO = new UserDTO();
             curUserDTO.setId(curUser.getId());
             curUserDTO.setUsername(curUser.getUsername());
+            curUserDTO.setRole(curUser.getRole());
             model.addAttribute("user", curUserDTO);
 
             Iterable<User> users = userRepository.findAll();
@@ -66,6 +66,7 @@ public class Calendar {
                 UserDTO uDTO = new UserDTO();
                 uDTO.setId(user.getId());
                 uDTO.setUsername(user.getUsername());
+                uDTO.setRole(user.getRole());
                 userDTOs.add(uDTO);
             }
             model.addAttribute("userListJson", new ObjectMapper().writeValueAsString(userDTOs));
@@ -80,20 +81,30 @@ public class Calendar {
     @PostMapping("/calendarAddEvent")
     public ResponseEntity<Void> createEvent(HttpSession session, @RequestBody EventDTO eventDTO) {
         eventService.saveEvent(session, eventDTO);
-
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/calendarAddRoom")
     public ResponseEntity<Void> createRoom(HttpSession session, @RequestBody RoomDTO roomDTO) {
-        roomService.saveEvent(session, roomDTO);
-
+        roomService.saveRoom(session, roomDTO);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/calendarDeleteEvent")
     public ResponseEntity<Void> deleteEvent(@RequestBody Long eventId) {
         eventRepository.deleteById(eventId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/calendarDeleteRoom")
+    public ResponseEntity<Void> deleteRoom(@RequestBody Room room) {
+        roomRepository.deleteById(room.getId());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/calendarChangesRoom")
+    public ResponseEntity<Void> changeRoom(@RequestBody RoomDTO roomDTO) {
+        roomService.changeRoom(roomDTO);
         return ResponseEntity.ok().build();
     }
 }

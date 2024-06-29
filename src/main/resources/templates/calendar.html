@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/style/modalAddEventStyle.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/style/modalAddRoomStyle.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/style/modalSettingsEventStyle.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/style/modalSettingsRoomStyle.css}">
 </head>
 <body>
 <header>
@@ -82,6 +83,24 @@
             </select>
         </div>
         <button class="add-room">Add</button>
+    </div>
+</div>
+
+<div class="modal" id="setting-room-modal">
+    <div class="modal-content">
+        <span class="close-setting-btn-room">&times;</span>
+        <h2>Add Room</h2>
+        <div class="input-fields">
+            <input type="text" placeholder="Room Name" class="room-setting-name-input" readonly>
+            <select class="room-setting-status-dropdown">
+                <option class="room-option" value="active">Active</option>
+                <option class="room-option" value="inactive">Inactive</option>
+            </select>
+        </div>
+        <div class="room-settings-buttons">
+            <button class="save-changes-room">Save changes</button>
+            <button class="delete-room">Delete Room</button>
+        </div>
     </div>
 </div>
 
@@ -181,6 +200,7 @@
 <script src="scripts/roomsSelectorJS.js"></script>
 <script src="scripts/modalAddRoomJS.js"></script>
 <script src="scripts/modalSettingsEventJS.js"></script>
+<script src="scripts/modalSettingsRoomJS.js"></script>
 <script>
     getDate(currentWeek);
     CurrentWeek(currentWeek);

@@ -4,14 +4,15 @@
 
     const logoElement = document.querySelector('.wrap-logo .logo');
     let roomStatus;
+    let curRoom;
 
-    let selectedRoom;
     if (rooms.length === 0) {
-        selectedRoom = "NoRooms";
+        logoElement.textContent = "NoRooms";
         roomStatus = "inactive";
         deleteEventBtn.style.display = 'none';
     } else {
-        selectedRoom = rooms[0].roomName;
+        curRoom = rooms[0];
+        logoElement.textContent = curRoom.roomName;
         roomStatus = rooms[0].status;
     }
 
@@ -19,9 +20,9 @@
       const roomItem = document.createElement('li');
       roomItem.textContent = room.roomName;
       roomItem.addEventListener('click', () => {
-        selectedRoom = room.roomName;
+        curRoom = room;
         roomStatus = room.status;
-        logoElement.textContent = selectedRoom;
+        logoElement.textContent = curRoom.roomName;
         getEvents(currentWeek);
         roomDropdown.classList.add('hidden');
 
@@ -36,8 +37,6 @@
       });
       roomList.appendChild(roomItem);
     });
-
-    logoElement.textContent = selectedRoom;
 
     roomSelectButton.addEventListener('click', () => {
       roomDropdown.classList.toggle('hidden');

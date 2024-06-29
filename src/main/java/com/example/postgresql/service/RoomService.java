@@ -1,33 +1,42 @@
 package com.example.postgresql.service;
 
-import com.example.postgresql.DTO.EventDTO;
 import com.example.postgresql.DTO.RoomDTO;
-import com.example.postgresql.model.Event;
 import com.example.postgresql.model.Room;
-import com.example.postgresql.model.User;
 import com.example.postgresql.repository.EventRepository;
 import com.example.postgresql.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
-import java.sql.Date;
+import javax.transaction.Transactional;
 
 @Service
 public class RoomService {
-    private final EventRepository eventRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final RoomRepository roomRepository;
 
-    public RoomService(EventRepository eventRepository, RoomRepository roomRepository) {
-        this.eventRepository = eventRepository;
+    public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
-    public void saveEvent(HttpSession session, RoomDTO roomDTO) {
+    public void saveRoom(HttpSession session, RoomDTO roomDTO) {
         Room room = new Room();
 
         room.setRoomName(roomDTO.getRoomName());
         room.setStatus(roomDTO.getRoomStatus());
 
         roomRepository.save(room);
+    }
+
+    @Transactional
+    public void changeRoom(RoomDTO roomDTO) {
+        System.out.println(roomDTO);
+        entityManager.createQuery("UPDATE Room r SET r.status = :newStatus WHERE r.id = :roomId")
+                .setParameter("newStatus", roomDTO.getRoomStatus())
+                .setParameter("roomId", roomDTO.getId())
+                .executeUpdate();
     }
 }
