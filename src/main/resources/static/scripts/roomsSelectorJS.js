@@ -3,12 +3,16 @@
     const roomList = document.querySelector('.room-list');
 
     const logoElement = document.querySelector('.wrap-logo .logo');
+    let roomStatus;
 
     let selectedRoom;
     if (rooms.length === 0) {
         selectedRoom = "NoRooms";
+        roomStatus = "inactive";
+        deleteEventBtn.style.display = 'none';
     } else {
         selectedRoom = rooms[0].roomName;
+        roomStatus = rooms[0].status;
     }
 
     rooms.forEach(room => {
@@ -16,9 +20,19 @@
       roomItem.textContent = room.roomName;
       roomItem.addEventListener('click', () => {
         selectedRoom = room.roomName;
+        roomStatus = room.status;
         logoElement.textContent = selectedRoom;
         getEvents(currentWeek);
         roomDropdown.classList.add('hidden');
+
+          if (roomStatus === "inactive") {
+              deleteEventBtn.style.display = 'none';
+              addEventBtn.style.display = 'none';
+          }
+          else {
+              deleteEventBtn.style.display = 'block';
+              addEventBtn.style.display = 'block';
+          }
       });
       roomList.appendChild(roomItem);
     });

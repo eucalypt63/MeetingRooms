@@ -8,9 +8,26 @@
     const rooms = JSON.parse(roomListJson);
     document.getElementById('roomList').remove();
 
+    const userListJson = document.getElementById('userList').dataset.events;
+    const users = JSON.parse(userListJson);
+    document.getElementById('userList').remove();
+    const UserDict = createUserDictionary(users);
+
+    const curUserJson = document.getElementById('CurUser').dataset.events;
+    //const curUser = JSON.parse(curUserJson);
+    document.getElementById('CurUser').remove();
+
     const eventDict = createEventDictionary(eventList, rooms);
 
     const rowHeight = 60;
+
+    function createUserDictionary(userListJson)
+    {
+        return userListJson.reduce((dict, user) => {
+            dict[user.id] = user.username;
+            return dict;
+        }, {});
+    }
 
     function createEventDictionary(eventList, rooms) {
       const eventDict = {};
@@ -38,7 +55,7 @@
       return eventDict;
     }
 
-     function createEvent(startTime, endTime, index, eventContent) {
+     function createEvent(startTime, endTime, index, eventContent, userId) {
        const startHour = Math.floor(startTime);
        const startMinutes = (startTime - startHour) * 60;
        const endHour = Math.floor(endTime);
@@ -70,8 +87,9 @@
          const startTimeString = `${startHour}:${Math.round(startMinutes).toString().padStart(2, '0')}`;
          const endTimeString = `${endHour}:${Math.round(endMinutes).toString().padStart(2, '0')}`;
 
+
        eventElement.style.whiteSpace = 'pre-line';
-       eventElement.textContent = `Time: ${startTimeString} - ${endTimeString}\n${eventContent}`;
+       eventElement.textContent = `Time: ${startTimeString} - ${endTimeString}\nOrganizer: ${UserDict[userId]}\n\n${eventContent}`;
        eventElement.style.overflow = 'auto';
        eventElement.style.wordBreak = 'break-word';
 
@@ -111,7 +129,7 @@
           const currentWeekEnd = new Date(currentWeekStart.getFullYear(), currentWeekStart.getMonth(),
               currentWeekStart.getDate() + 6);
 
-          const selectedRoomName = document.querySelector('.wrap-logo .logo').textContent.trim();
+          const selectedRoomName = selectedRoom;
 
           for (
               let currentDate = new Date(currentWeekStart.getTime());
@@ -127,7 +145,7 @@
                       const startEventTime = startHour + startMinute / 60;
                       const stopEventTime = stopHour + stopMinute / 60;
 
-                      createEvent(startEventTime, stopEventTime, currentDate.getDay() - 1, event.eventContent);
+                      createEvent(startEventTime, stopEventTime, currentDate.getDay() - 1, event.eventContent, event.userId);
                   });
               }
           }

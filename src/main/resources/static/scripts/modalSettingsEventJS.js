@@ -1,6 +1,5 @@
 const modalSet = document.getElementById('setting-event-modal');
 const closeBtnSet = document.querySelector('.close-setting-btn-event');
-const settingEventBtn = document.querySelector('.settings-event');
 const deleteEventBtn = document.querySelector('.delete-event');
 const dateInputSet = document.querySelector('.settings-date-input');
 const startTimeInputSet = document.querySelector('.settings-start-time-input');
@@ -10,7 +9,7 @@ let roomNameSet = "";
 let eventId;
 
 function openSetModal(day, startTimeString, endTimeString, eventContent) {
-    roomNameSet = document.querySelector('.logo').textContent;
+    roomNameSet = selectedRoom;
     modalSet.style.display = 'block';
     dateInputSet.value = day.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
     startTimeInputSet.value = startTimeString;

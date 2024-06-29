@@ -22,7 +22,6 @@
             </div>
         </div>
         <a class="add-room-btn">Add Room</a>
-        <a class="settings-room-btn">Room settings</a>
     </div>
     <div class="center-buttons">
         <button class="prev-week">Next week</button>
@@ -32,6 +31,10 @@
     <nav>
         <a class="add-event-btn">Add Event</a>
         <a class="active" th:href="@{/logout}">Logout</a>
+        <div class="user-info">
+            <i class="user-icon">&#128100;</i>
+            <span class="user-name" th:text="${user.username}">User Name</span>
+        </div>
     </nav>
 </header>
 
@@ -170,6 +173,8 @@
 </div>
 <div id="eventList" th:attr="data-events=${eventListJson}"></div>
 <div id="roomList" th:attr="data-events=${roomListJson}"></div>
+<div id="userList" th:attr="data-events=${userListJson}"></div>
+<div id="CurUser" th:attr="data-events=${user}"></div>
 <script src="scripts/modalAddEventJS.js"></script>
 <script src="scripts/paginationJS.js"></script>
 <script src="scripts/eventJS.js"></script>

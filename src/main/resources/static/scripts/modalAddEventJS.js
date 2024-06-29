@@ -9,7 +9,7 @@
     let roomName = "";
 
     function openModal() {
-        roomName = document.querySelector('.logo').textContent;
+      roomName = selectedRoom;
       modal.style.display = 'block';
       const today = new Date();
 
