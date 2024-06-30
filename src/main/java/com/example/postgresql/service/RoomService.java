@@ -2,7 +2,6 @@ package com.example.postgresql.service;
 
 import com.example.postgresql.DTO.RoomDTO;
 import com.example.postgresql.model.Room;
-import com.example.postgresql.repository.EventRepository;
 import com.example.postgresql.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +32,6 @@ public class RoomService {
 
     @Transactional
     public void changeRoom(RoomDTO roomDTO) {
-        System.out.println(roomDTO);
         entityManager.createQuery("UPDATE Room r SET r.status = :newStatus WHERE r.id = :roomId")
                 .setParameter("newStatus", roomDTO.getRoomStatus())
                 .setParameter("roomId", roomDTO.getId())

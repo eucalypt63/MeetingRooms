@@ -107,4 +107,10 @@ public class Calendar {
         roomService.changeRoom(roomDTO);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/calendarChangesEvent")
+    public ResponseEntity<Void> changeEvent(@RequestBody EventDTO eventDTO) {
+        eventService.changeEvent(eventDTO);
+        return ResponseEntity.ok().build();
+    }
 }

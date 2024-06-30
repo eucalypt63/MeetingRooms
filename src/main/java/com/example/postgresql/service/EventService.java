@@ -8,11 +8,17 @@ import com.example.postgresql.repository.EventRepository;
 import com.example.postgresql.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.sql.Date;
 
 @Service
 public class EventService {
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final EventRepository eventRepository;
     private final RoomRepository roomRepository;
 
@@ -35,5 +41,19 @@ public class EventService {
         event.setUserId(user.getId());
 
         eventRepository.save(event);
+    }
+
+    @Transactional
+    public void changeEvent(EventDTO eventDTO) {
+        entityManager.createQuery("UPDATE Event e SET e.eventDate = :newDate, " +
+                                     "e.startEventTime = :newStartEventTime," +
+                                     "e.stopEventTime = :newStopEventTime," +
+                                     "e.eventContent = :newEventContent WHERE e.id = :eventId")
+                .setParameter("newDate", Date.valueOf(eventDTO.getFormattedDate()))
+                .setParameter("newStartEventTime", eventDTO.getStartTime())
+                .setParameter("newStopEventTime", eventDTO.getEndTime())
+                .setParameter("newEventContent", eventDTO.getDescription())
+                .setParameter("eventId", eventDTO.getId())
+                .executeUpdate();
     }
 }

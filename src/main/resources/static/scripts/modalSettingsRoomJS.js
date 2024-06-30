@@ -76,10 +76,13 @@ function saveChangesRoom() {
     closeRoomSetModal();
 }
 
-setRoomBtn.addEventListener('click', openRoomSetModal);
-closeRoomBtnSet.addEventListener('click', closeRoomSetModal);
-deleteRoomBtn.addEventListener('click', deleteRoom)
-saveRoomChangesBtn.addEventListener('click', saveChangesRoom)
+if(userRole === "admin") {
+    setRoomBtn.addEventListener('click', openRoomSetModal);
+    closeRoomBtnSet.addEventListener('click', closeRoomSetModal);
+    deleteRoomBtn.addEventListener('click', deleteRoom)
+    saveRoomChangesBtn.addEventListener('click', saveChangesRoom)
+    setRoomBtn.style.cursor = "pointer";
+}
 
 window.addEventListener('click', (event) => {
     if (event.target === modalRoomSet) {

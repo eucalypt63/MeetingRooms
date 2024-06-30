@@ -60,14 +60,17 @@
         <span class="close-setting-btn-event">&times;</span>
         <h2>Event settings</h2>
         <div class="input-fields">
-            <input type="text" placeholder="dd.mm.yyyy" class="settings-date-input" readonly>
+            <input type="text" placeholder="dd.mm.yyyy" class="settings-date-input">
             <div class="time-input-container">
-                <input type="text" placeholder="Start time:time" class="settings-start-time-input" readonly>
-                <input type="text" placeholder="End time:time" class="settings-end-time-input" readonly>
+                <input type="text" placeholder="Start time:time" class="settings-start-time-input">
+                <input type="text" placeholder="End time:time" class="settings-end-time-input">
             </div>
-            <textarea placeholder="Description" class="settings-description-input" readonly></textarea>
+            <textarea placeholder="Description" class="settings-description-input"></textarea>
         </div>
+        <div class="event-settings-buttons">
+            <button class="save-changes-event">Save changes</button>
             <button class="delete-event">Delete Event</button>
+        </div>
     </div>
 </div>
 
@@ -107,31 +110,13 @@
 <div class="calendar">
     <div class="timeline">
         <div class="spacer"></div>
-        <div class="time-marker">0 AM</div>
-        <div class="time-marker">1 AM</div>
-        <div class="time-marker">2 AM</div>
-        <div class="time-marker">3 AM</div>
-        <div class="time-marker">4 AM</div>
-        <div class="time-marker">5 AM</div>
-        <div class="time-marker">6 AM</div>
-        <div class="time-marker">7 AM</div>
-        <div class="time-marker">8 AM</div>
-        <div class="time-marker">9 AM</div>
-        <div class="time-marker">10 AM</div>
-        <div class="time-marker">11 AM</div>
-        <div class="time-marker">12 AM</div>
-        <div class="time-marker">1 PM</div>
-        <div class="time-marker">2 PM</div>
-        <div class="time-marker">3 PM</div>
-        <div class="time-marker">4 PM</div>
-        <div class="time-marker">5 PM</div>
-        <div class="time-marker">6 PM</div>
-        <div class="time-marker">7 PM</div>
-        <div class="time-marker">8 PM</div>
-        <div class="time-marker">9 PM</div>
-        <div class="time-marker">10 PM</div>
-        <div class="time-marker">11 PM</div>
-        <div class="time-marker">12 PM</div>
+        <script>
+            for (let i = 0; i < 25; i++) {
+                let hours = i;
+                let minutes = "00";
+                document.write(`<div class="time-marker">${hours}:${minutes}</div>`);
+            }
+        </script>
     </div>
     <div class="days">
         <div class="day mon">

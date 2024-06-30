@@ -62,10 +62,12 @@ function addRoomEvent() {
     }
     closeRoomModal();
 }
-
-addRoomBtn.addEventListener('click', openRoomModal);
-closeRoomBtn.addEventListener('click', closeRoomModal);
-addRoom.addEventListener('click', addRoomEvent);
+if (userRole === 'admin') {
+    addRoomBtn.addEventListener('click', openRoomModal);
+    closeRoomBtn.addEventListener('click', closeRoomModal);
+    addRoom.addEventListener('click', addRoomEvent);
+}
+else {addRoomBtn.remove();}
 
 window.addEventListener('click', (event) => {
     if (event.target === roomModal) {

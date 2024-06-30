@@ -30,3 +30,19 @@
     width: 100%;
     resize: vertical;
 }
+
+.save-changes-event {
+    background-color: #0448aa;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.event-settings-buttons {
+    display: flex;
+    align-items: center;
+}

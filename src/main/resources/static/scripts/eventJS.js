@@ -13,8 +13,16 @@
     document.getElementById('userList').remove();
     const UserDict = createUserDictionary(users);
 
-    const curUserJson = document.getElementById('CurUser').dataset.events;
+    const curUser = document.getElementById('CurUser').dataset.events;
     document.getElementById('CurUser').remove();
+
+    const idMatch = curUser.match(/id=(\d+)/);
+    const usernameMatch = curUser.match(/username=(\w+)/);
+    const roleMatch = curUser.match(/role=(\w+)/);
+
+    const userId = parseInt(idMatch[1]);
+    const userName = usernameMatch[1];
+    const userRole = roleMatch[1];
 
     const eventDict = createEventDictionary(eventList, rooms);
 
@@ -54,7 +62,7 @@
       return eventDict;
     }
 
-     function createEvent(startTime, endTime, index, eventContent, userId) {
+     function createEvent(startTime, endTime, index, eventContent, userEventId) {
        const startHour = Math.floor(startTime);
        const startMinutes = (startTime - startHour) * 60;
        const endHour = Math.floor(endTime);
@@ -69,18 +77,16 @@
        eventElement.style.gridRowStart = 1;
        eventElement.style.marginTop = `${(startMinutes / 60) * rowHeight + (startRow - 1) * 60}px`;
        eventElement.style.height = `${((endRow - startRow) + (endMinutes / 60) - (startMinutes / 60)) * rowHeight - 4}px `;
-       eventElement.style.backgroundColor = getRandomEventColor();//!!!!!!!
+       eventElement.style.backgroundColor = '#ffd6d1';
 
        eventElement.addEventListener('mouseenter', () => {
            eventElement.style.minHeight = '150px';
            eventElement.style.zIndex = '100';
-           settingsIcon.style.display = 'block';
        });
 
        eventElement.addEventListener('mouseleave', () => {
            eventElement.style.minHeight = '0px';
            eventElement.style.zIndex = '0';
-           settingsIcon.style.display = 'none';
        });
 
          const startTimeString = `${startHour}:${Math.round(startMinutes).toString().padStart(2, '0')}`;
@@ -89,29 +95,27 @@
 
        eventElement.style.whiteSpace = 'pre-line';
        eventElement.textContent = `Time: ${startTimeString} - ${endTimeString}
-                                   Organizer: ${UserDict[userId].username}\n
+                                   Organizer: ${UserDict[userEventId].username}\n
                                    ${eventContent}`;
        eventElement.style.overflow = 'auto';
        eventElement.style.wordBreak = 'break-word';
+       if (userId === userEventId || userRole === 'admin') {
+           const settingsIcon = document.createElement('i');
+           settingsIcon.classList.add('fa', 'fa-cog');
 
-       const settingsIcon = document.createElement('i');
-       settingsIcon.classList.add('fa', 'fa-cog');
-       settingsIcon.addEventListener('click', () => {
-           eventElement.style.zIndex = '0';
-           const today = new Date();
-           const day = new Date(today.getTime() - (today.getDay() - 2 - (currentWeek * 7) - index) * 86400000);
+           settingsIcon.addEventListener('click', () => {
+               eventElement.style.zIndex = '0';
+               const today = new Date();
+               const day = new Date(today.getTime() - (today.getDay() - 2 - (currentWeek * 7) - index) * 86400000);
 
-           openSetModal(day, startTimeString, endTimeString, eventContent);
-       });
-
-       eventElement.appendChild(settingsIcon);
+               openSetModal(day, startTimeString, endTimeString, eventContent);
+           });
+           eventElement.addEventListener('mouseleave', () => {settingsIcon.style.display = 'none'; });
+           eventElement.addEventListener('mouseenter', () => {settingsIcon.style.display = 'block'; });
+           eventElement.appendChild(settingsIcon);
+           if (userId === userEventId) {eventElement.style.backgroundColor = '#d1ffe6';}
+       }
        eventContainers[index].appendChild(eventElement);
-     }
-
-     function getRandomEventColor() {
-       const colors = ['#ffd6d1', '#fafaa3', '#e2f8ff', '#d1ffe6'];
-       const randomIndex = Math.floor(Math.random() * colors.length);
-       return colors[randomIndex];
      }
 
     function getEvents(weekOffset) {
