@@ -25,7 +25,8 @@ function openSetModal(day, startTimeString, endTimeString, eventContent) {
     const [hoursSettingsEventStart, minutesSettingsEventStart] = startTimeString.split(':').map(Number);
     const [hoursSettingsEventStop, minutesSettingsEventStop] = endTimeString.split(':').map(Number);
 
-    const formattedDate = dayMinus.toISOString().slice(0, 10);
+    const formattedDate = day.toISOString().slice(0, 10);
+    console.log(formattedDate);
     const roomEvents = eventDict[roomNameSet][formattedDate]
 
     for (const event of Object.values(roomEvents)) {
@@ -34,6 +35,7 @@ function openSetModal(day, startTimeString, endTimeString, eventContent) {
         if (hoursSettingsEventStart === hoursEventStart && minutesSettingsEventStart === minutesEventStart &&
             hoursSettingsEventStop === hoursEventStop && minutesSettingsEventStop === minutesEventStop) {
             eventId = event.id;
+            console.log(eventId);
             break;
         }
     }
@@ -103,7 +105,6 @@ function saveChangesEvent() {
     const [day, month, year] = date.split('.');
     let formattedDate = `${year}-${month}-${day}`;
 
-
     const startTimeParts = startTime.split(':');
     const endTimeParts = endTime.split(':');
     const startDateTime = new Date(`${formattedDate} ${startTimeParts[0]}:${startTimeParts[1]}`);
@@ -113,7 +114,7 @@ function saveChangesEvent() {
         alert('Minimum event time - 30 minutes');
         return;
     }
-
+    console.log(formattedDate);
     if (eventDict[roomName] && eventDict[roomName][formattedDate]) {
         for (const event of eventDict[roomName][formattedDate]) {
             const eventStartDateTime = new Date(`${formattedDate} ${event.startEventTime}`);

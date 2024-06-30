@@ -7,6 +7,11 @@
     const roomListJson = document.getElementById('roomList').dataset.events;
     const rooms = JSON.parse(roomListJson);
     document.getElementById('roomList').remove();
+    rooms.sort((a, b) => {
+        if (a.roomName < b.roomName) return -1;
+        if (a.roomName > b.roomName) return 1;
+        return 0;
+    });
 
     const userListJson = document.getElementById('userList').dataset.events;
     const users = JSON.parse(userListJson);
@@ -87,6 +92,7 @@
        eventElement.addEventListener('mouseleave', () => {
            eventElement.style.minHeight = '0px';
            eventElement.style.zIndex = '0';
+           eventElement.scrollTop = 0;
        });
 
          const startTimeString = `${startHour}:${Math.round(startMinutes).toString().padStart(2, '0')}`;

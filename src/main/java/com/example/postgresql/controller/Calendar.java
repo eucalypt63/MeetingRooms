@@ -110,6 +110,8 @@ public class Calendar {
 
     @PostMapping("/calendarChangesEvent")
     public ResponseEntity<Void> changeEvent(@RequestBody EventDTO eventDTO) {
+        System.out.println(eventDTO);
+
         eventService.changeEvent(eventDTO);
         return ResponseEntity.ok().build();
     }
