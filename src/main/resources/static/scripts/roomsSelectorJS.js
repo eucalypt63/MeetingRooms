@@ -2,8 +2,6 @@
     const parentElement = addEventBtn.parentNode;
 
     const settingsBtns = document.querySelector('.event-settings-buttons');
-    const deleteEventBtnSelect = document.querySelector('.delete-event');
-    const saveEventChangesBtnSelect = document.querySelector('.save-changes-event');
 
     const roomSelectButton = document.querySelector('.room-select-btn');
     const roomDropdown = document.querySelector('.room-dropdown');

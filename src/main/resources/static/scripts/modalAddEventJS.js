@@ -26,7 +26,7 @@
       dateInput.value = formattedDate;
     }
 
-    function closeModal() {
+    function closeAddEventModal() {
       modal.style.display = 'none';
       clearInputFields();
     }
@@ -38,7 +38,6 @@
       descriptionInput.value = '';
     }
 
-    //Слишком объёмная функция, нужно разделить (╯▔皿▔)╯
     function addEvent() {
         const date = dateInput.value;
         const startTime = startTimeInput.value;
@@ -99,7 +98,7 @@
         })
             .then(response => {
                 if (response.ok) {
-                    closeModal();
+                    closeAddEventModal();
                     window.location.href = "/calendar";
                 } else {
                     alert('Error creating event, bed response');
@@ -110,15 +109,15 @@
                 console.error('Error:', error);
                 alert('Error creating event');
             });
-        closeModal();
+        closeAddEventModal();
     }
 
     addEventBtn.addEventListener('click', openModal);
-    closeBtn.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeAddEventModal);
     addBtn.addEventListener('click', addEvent);
 
     window.addEventListener('click', (event) => {
       if (event.target === modal) {
-        closeModal();
+          closeAddEventModal();
       }
     });

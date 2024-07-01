@@ -18,7 +18,7 @@ function openSetModal(day, startTimeString, endTimeString, eventContent) {
     descriptionInputSet.value = eventContent;
 }
 
-function closeModal() {
+function closeEventSetModal() {
     modalSet.style.display = 'none';
     clearInputFields();
 }
@@ -40,7 +40,7 @@ function deleteEvent() {
     })
         .then(response => {
             if (response.ok) {
-                closeModal();
+                closeEventSetModal();
                 window.location.href = "/calendar";
             } else {
                 alert('Error delete event, bed response');
@@ -51,7 +51,7 @@ function deleteEvent() {
             console.error('Error:', error);
             alert('Error delete event');
         });
-    closeModal();
+    closeEventSetModal();
 }
 
 function saveChangesEvent() {
@@ -117,7 +117,7 @@ function saveChangesEvent() {
     })
         .then(response => {
             if (response.ok) {
-                closeRoomSetModal();
+                closeEventSetModal();
                 window.location.href = "/calendar";
             } else {
                 alert('Error change room, bed response');
@@ -128,15 +128,15 @@ function saveChangesEvent() {
             console.error('Error:', error);
             alert('Error change room');
         });
-    closeRoomSetModal();
+    closeEventSetModal();
 }
 
-closeBtnSet.addEventListener('click', closeModal);
+closeBtnSet.addEventListener('click', closeEventSetModal);
 deleteEventBtn.addEventListener('click', deleteEvent);
 saveEventChangesBtn.addEventListener('click', saveChangesEvent);
 
 window.addEventListener('click', (event) => {
     if (event.target === modalSet) {
-        closeModal();
+        closeEventSetModal();
     }
 });
