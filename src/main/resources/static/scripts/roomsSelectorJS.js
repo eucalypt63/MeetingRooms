@@ -1,3 +1,10 @@
+    const addEventBtnSelect = document.querySelector('.add-event-btn');
+    const parentElement = addEventBtn.parentNode;
+
+    const settingsBtns = document.querySelector('.event-settings-buttons');
+    const deleteEventBtnSelect = document.querySelector('.delete-event');
+    const saveEventChangesBtnSelect = document.querySelector('.save-changes-event');
+
     const roomSelectButton = document.querySelector('.room-select-btn');
     const roomDropdown = document.querySelector('.room-dropdown');
     const roomList = document.querySelector('.room-list');
@@ -9,10 +16,16 @@
     if (rooms.length === 0) {
         logoElement.textContent = "NoRooms";
         roomStatus = "inactive";
+        settingsBtns.remove();
+        addEventBtnSelect.remove();
     } else {
         curRoom = rooms[0];
         logoElement.textContent = curRoom.roomName;
         roomStatus = rooms[0].status;
+        if (roomStatus === "inactive") {
+            settingsBtns.remove();
+            addEventBtnSelect.remove();
+        }
     }
 
     rooms.forEach(room => {
@@ -26,12 +39,45 @@
         roomDropdown.classList.add('hidden');
 
           if (roomStatus === "inactive") {
-              deleteEventBtn.style.display = 'none';
-              addEventBtn.style.display = 'none';
+              const settingsBtns = document.querySelector('.event-settings-buttons');
+              if(settingsBtns) {settingsBtns.remove();}
+
+              const addEventBtnSelect = document.querySelector('.add-event-btn');
+              if(addEventBtnSelect) {addEventBtnSelect.remove();}
           }
           else {
-              deleteEventBtn.style.display = 'block';
-              addEventBtn.style.display = 'block';
+              const settingsBtns = document.querySelector('.event-settings-buttons');
+              if(!settingsBtns) {
+                  const parentElement = document.querySelector('.modal-content-event-set');
+
+                  const eventSettingsButtons = document.createElement('div');
+                  eventSettingsButtons.classList.add('event-settings-buttons');
+
+                  const saveChangesButton = document.createElement('button');
+                  saveChangesButton.classList.add('save-changes-event');
+                  saveChangesButton.textContent = 'Save changes';
+
+                  const deleteEventButton = document.createElement('button');
+                  deleteEventButton.classList.add('delete-event');
+                  deleteEventButton.textContent = 'Delete Event';
+
+                  deleteEventButton.addEventListener('click', deleteEvent);
+                  saveChangesButton.addEventListener('click', saveChangesEvent);
+
+                  eventSettingsButtons.appendChild(saveChangesButton);
+                  eventSettingsButtons.appendChild(deleteEventButton);
+
+                  parentElement.appendChild(eventSettingsButtons);
+              }
+
+              const addEventBtnSelect = document.querySelector('.add-event-btn');
+              if(!addEventBtnSelect) {
+                  const newAddEventBtn = document.createElement('a');
+                  newAddEventBtn.classList.add('add-event-btn');
+                  newAddEventBtn.textContent = 'Add Event';
+
+                  parentElement.insertBefore(addEventBtn, parentElement.firstChild);
+              }
           }
       });
       roomList.appendChild(roomItem);

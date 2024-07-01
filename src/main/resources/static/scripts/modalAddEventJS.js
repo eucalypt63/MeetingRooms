@@ -65,9 +65,6 @@
         const [day, month, year] = date.split('.');
         const formattedDate = `${year}-${month}-${day}`;
 
-        console.log("getEvents");
-        console.log(formattedDate);
-
         const startTimeParts = startTime.split(':');
         const endTimeParts = endTime.split(':');
         const startDateTime = new Date(`${formattedDate} ${startTimeParts[0]}:${startTimeParts[1]}`);

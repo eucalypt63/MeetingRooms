@@ -121,6 +121,7 @@
            eventElement.appendChild(settingsIcon);
            if (userId === userEventId) {eventElement.style.backgroundColor = '#d1ffe6';}
        }
+
        eventContainers[index].appendChild(eventElement);
      }
 
@@ -135,7 +136,7 @@
 
           const currentDate = new Date();
           const currentWeekStart = new Date(currentDate.getFullYear(), currentDate.getMonth(),
-              currentDate.getDate() - currentDate.getDay() + (weekOffset * 7) + 1);
+              currentDate.getDate() - currentDate.getDay() + (weekOffset * 7));
 
           const currentWeekEnd = new Date(currentWeekStart.getFullYear(), currentWeekStart.getMonth(),
               currentWeekStart.getDate() + 6);
