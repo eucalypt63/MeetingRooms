@@ -25,6 +25,7 @@ function clearInputFields() {
 }
 
 function deleteRoom() {
+    console.log(curRoomSet);
     fetch('/calendarDeleteRoom', {
         method: 'POST',
         headers: {
@@ -48,7 +49,6 @@ function deleteRoom() {
     closeRoomSetModal();
 }
 
-//Меняет комнаты местами, переделать, чтобы выводило по названию ABC
 function saveChangesRoom() {
     const id = curRoomSet.id;
     const roomName = curRoomSet.roomName;

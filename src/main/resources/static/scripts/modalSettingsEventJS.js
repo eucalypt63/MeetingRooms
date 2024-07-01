@@ -57,8 +57,8 @@ function deleteEvent() {
 function saveChangesEvent() {
     const id = eventId;
     const date = dateInputSet.value;
-    const startTime = startTimeInputSet.value;
-    const endTime = endTimeInputSet.value;
+    let startTime = startTimeInputSet.value;
+    let endTime = endTimeInputSet.value;
     const description = descriptionInputSet.value;
     const roomName = roomNameSet;
 
@@ -108,6 +108,8 @@ function saveChangesEvent() {
             }
         }
     }
+    startTime = startTime.padStart(5, '0') + ':00';
+    endTime = endTime.padStart(5, '0') + ':00';
     fetch('/calendarChangesEvent', {
         method: 'POST',
         headers: {

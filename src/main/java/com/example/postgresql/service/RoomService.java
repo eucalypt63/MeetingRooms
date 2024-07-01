@@ -21,6 +21,7 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
+    @Transactional
     public void saveRoom(HttpSession session, RoomDTO roomDTO) {
         Room room = new Room();
 

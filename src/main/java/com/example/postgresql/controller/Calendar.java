@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +81,7 @@ public class Calendar {
 
     @PostMapping("/calendarAddEvent")
     public ResponseEntity<Void> createEvent(HttpSession session, @RequestBody EventDTO eventDTO) {
+        System.out.println(eventDTO);
         eventService.saveEvent(session, eventDTO);
         return ResponseEntity.ok().build();
     }
@@ -90,15 +92,17 @@ public class Calendar {
         return ResponseEntity.ok().build();
     }
 
+    @Transactional
     @PostMapping("/calendarDeleteEvent")
     public ResponseEntity<Void> deleteEvent(@RequestBody Long eventId) {
         eventRepository.deleteById(eventId);
         return ResponseEntity.ok().build();
     }
 
+    @Transactional
     @PostMapping("/calendarDeleteRoom")
-    public ResponseEntity<Void> deleteRoom(@RequestBody Room room) {
-        roomRepository.deleteById(room.getId());
+    public ResponseEntity<Void> deleteRoom(@RequestBody RoomDTO roomDTO) {
+        roomRepository.deleteById(roomDTO.getId());
         return ResponseEntity.ok().build();
     }
 

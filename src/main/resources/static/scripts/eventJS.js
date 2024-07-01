@@ -2,7 +2,7 @@
 
     const eventListElement = document.getElementById('eventList');
     const eventList = JSON.parse(eventListElement.getAttribute('data-events'));
-    eventListElement.remove();
+    //eventListElement.remove();
 
     const roomListJson = document.getElementById('roomList').dataset.events;
     const rooms = JSON.parse(roomListJson);
@@ -50,17 +50,27 @@
       });
 
       eventList.forEach((event) => {
-        const eventDate = new Date(event.eventDate);
 
+        const eventDate = new Date(event.eventDate);
         const formattedDate = eventDate.toLocaleDateString().split('.').reverse().join('-');
-        const roomId = event.roomId;
-        const roomName = rooms.find((room) => room.id === roomId).roomName;
+        const roomName = rooms.find((room) => room.id === event.room.id).roomName;
 
         if (!eventDict[roomName][formattedDate]) {
           eventDict[roomName][formattedDate] = [];
         }
 
-        eventDict[roomName][formattedDate].push(event);
+        const startTime = `${event.startEventTime.hour.toString().padStart(2, '0')}:${event.startEventTime.minute.toString().padStart(2, '0')}`;
+        const endTime = `${event.stopEventTime.hour.toString().padStart(2, '0')}:${event.stopEventTime.minute.toString().padStart(2, '0')}`;
+
+          eventDict[roomName][formattedDate].push({
+              id: event.id,
+              eventContent: event.eventContent,
+              startEventTime: startTime,
+              stopEventTime: endTime,
+              user: event.user.id,
+              room: event.room.id
+          });
+          console.log(eventDict[roomName][formattedDate]);
       });
 
       return eventDict;
@@ -85,7 +95,7 @@
 
        eventElement.addEventListener('mouseenter', () => {
            eventElement.style.minHeight = '150px';
-           eventElement.style.zIndex = '100';
+           eventElement.style.zIndex = '3';
        });
 
        eventElement.addEventListener('mouseleave', () => {
@@ -97,7 +107,7 @@
          const startTimeString = `${startHour}:${Math.round(startMinutes).toString().padStart(2, '0')}`;
          const endTimeString = `${endHour}:${Math.round(endMinutes).toString().padStart(2, '0')}`;
 
-
+        console.log(UserDict[userEventId]);//
        eventElement.style.whiteSpace = 'pre-line';
        eventElement.textContent = `Time: ${startTimeString} - ${endTimeString}
                                    Organizer: ${UserDict[userEventId].username}\n
@@ -157,7 +167,7 @@
                       const startEventTime = startHour + startMinute / 60;
                       const stopEventTime = stopHour + stopMinute / 60;
 
-                      createEvent(startEventTime, stopEventTime, currentDate.getDay(), event.eventContent, event.userId, event.id);
+                      createEvent(startEventTime, stopEventTime, currentDate.getDay(), event.eventContent, event.user, event.id);
                   });
               }
           }

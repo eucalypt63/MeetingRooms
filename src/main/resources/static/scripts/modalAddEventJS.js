@@ -40,8 +40,8 @@
 
     function addEvent() {
         const date = dateInput.value;
-        const startTime = startTimeInput.value;
-        const endTime = endTimeInput.value;
+        let startTime = startTimeInput.value;
+        let endTime = endTimeInput.value;
         const description = descriptionInput.value;
 
         if (!date || !startTime || !endTime || !description) {
@@ -88,7 +88,8 @@
                 }
             }
         }
-
+        startTime = startTimeInput.value.padStart(5, '0') + ':00';
+        endTime = endTimeInput.value.padStart(5, '0') + ':00';
         fetch('/calendarAddEvent', {
             method: 'POST',
             headers: {

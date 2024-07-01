@@ -1,8 +1,10 @@
 package com.example.postgresql.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "usr")
@@ -14,4 +16,8 @@ public class User {
     private String username;
     private String role;
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    private List<Event> events;
 }

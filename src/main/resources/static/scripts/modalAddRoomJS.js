@@ -42,7 +42,7 @@ function addRoomEvent() {
         })
             .then(response => {
                 if (response.ok) {
-                    closeModal();
+                    closeRoomModal();
                     window.location.href = "/calendar";
                 } else {
                     alert('Error creating room, bed response');
@@ -53,7 +53,7 @@ function addRoomEvent() {
                 console.error('Error:', error);
                 alert('Error creating room');
             });
-        closeModal();
+        closeRoomModal();
     }
     else
     {

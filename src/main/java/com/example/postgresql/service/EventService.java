@@ -27,7 +27,9 @@ public class EventService {
         this.roomRepository = roomRepository;
     }
 
+    @Transactional
     public void saveEvent(HttpSession session, EventDTO eventDTO) {
+        System.out.println(eventDTO);
         User user = (User) session.getAttribute("user");
         Room room = roomRepository.findByRoomName(eventDTO.getRoomName());
 
@@ -37,8 +39,8 @@ public class EventService {
         event.setStartEventTime(eventDTO.getStartTime());
         event.setStopEventTime(eventDTO.getEndTime());
         event.setEventDate(Date.valueOf(eventDTO.getFormattedDate()));
-        event.setRoomId(room.getId());
-        event.setUserId(user.getId());
+        event.setRoom(room);
+        event.setUser(user);
 
         eventRepository.save(event);
     }
