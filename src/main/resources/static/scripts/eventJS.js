@@ -30,6 +30,7 @@
     const userRole = roleMatch[1];
 
     const eventDict = createEventDictionary(eventList, rooms);
+    let eventId;
 
     const rowHeight = 60;
 
@@ -50,11 +51,9 @@
 
       eventList.forEach((event) => {
         const eventDate = new Date(event.eventDate);
-        eventDate.setDate(eventDate.getDate() + 1);
 
-        const formattedDate = eventDate.toISOString().slice(0, 10);
+        const formattedDate = eventDate.toLocaleDateString().split('.').reverse().join('-');
         const roomId = event.roomId;
-
         const roomName = rooms.find((room) => room.id === roomId).roomName;
 
         if (!eventDict[roomName][formattedDate]) {
@@ -67,7 +66,7 @@
       return eventDict;
     }
 
-     function createEvent(startTime, endTime, index, eventContent, userEventId) {
+     function createEvent(startTime, endTime, index, eventContent, userEventId, eventid) {
        const startHour = Math.floor(startTime);
        const startMinutes = (startTime - startHour) * 60;
        const endHour = Math.floor(endTime);
@@ -112,7 +111,8 @@
            settingsIcon.addEventListener('click', () => {
                eventElement.style.zIndex = '0';
                const today = new Date();
-               const day = new Date(today.getTime() - (today.getDay() - 2 - (currentWeek * 7) - index) * 86400000);
+               const day = new Date(today.getTime() - (today.getDay() - 1 - (currentWeek * 7) - index) * 86400000);
+               eventId = eventid;
 
                openSetModal(day, startTimeString, endTimeString, eventContent);
            });
@@ -147,7 +147,7 @@
               currentDate <= currentWeekEnd;
               currentDate.setDate(currentDate.getDate() + 1)
           ) {
-              const formattedDate = new Date(currentDate.getTime() + 86400000).toISOString().slice(0, 10);
+              const formattedDate = new Date(currentDate.getTime() + 86400000).toLocaleDateString().split('.').reverse().join('-');
               if (eventDict[selectedRoomName] && eventDict[selectedRoomName][formattedDate]) {
                   eventDict[selectedRoomName][formattedDate].forEach((event) => {
                       const [startHour, startMinute] = event.startEventTime.split(':').map(Number);
@@ -156,7 +156,7 @@
                       const startEventTime = startHour + startMinute / 60;
                       const stopEventTime = stopHour + stopMinute / 60;
 
-                      createEvent(startEventTime, stopEventTime, currentDate.getDay() - 1, event.eventContent, event.userId);
+                      createEvent(startEventTime, stopEventTime, currentDate.getDay(), event.eventContent, event.userId, event.id);
                   });
               }
           }

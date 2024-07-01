@@ -38,7 +38,6 @@
        const mondayDate = new Date(currentDate.getTime() - (currentDate.getDay() - 1) * 24 * 60 * 60 * 1000);
 
        mondayDate.setDate(mondayDate.getDate() + weekOffset * 7);
-
        const tuesdayDate = new Date(mondayDate.getTime() + 24 * 60 * 60 * 1000);
        const wednesdayDate = new Date(mondayDate.getTime() + 2 * 24 * 60 * 60 * 1000);
        const thursdayDate = new Date(mondayDate.getTime() + 3 * 24 * 60 * 60 * 1000);

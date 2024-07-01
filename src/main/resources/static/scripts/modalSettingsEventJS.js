@@ -7,38 +7,15 @@ const endTimeInputSet = document.querySelector('.settings-end-time-input');
 const descriptionInputSet = document.querySelector('.settings-description-input');
 const saveEventChangesBtn = document.querySelector('.save-changes-event');
 let roomNameSet = "";
-let eventId;
 
 function openSetModal(day, startTimeString, endTimeString, eventContent) {
     roomNameSet = curRoom.roomName;
     modalSet.style.display = 'block';
 
-    const dayMinus = new Date(day);
-    dayMinus.setDate(dayMinus.getDate() - 1);
-    dayMinus.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-
-    dateInputSet.value = dayMinus.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    dateInputSet.value = day.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
     startTimeInputSet.value = startTimeString;
     endTimeInputSet.value = endTimeString;
     descriptionInputSet.value = eventContent;
-
-    const [hoursSettingsEventStart, minutesSettingsEventStart] = startTimeString.split(':').map(Number);
-    const [hoursSettingsEventStop, minutesSettingsEventStop] = endTimeString.split(':').map(Number);
-
-    const formattedDate = day.toISOString().slice(0, 10);
-    console.log(formattedDate);
-    const roomEvents = eventDict[roomNameSet][formattedDate]
-
-    for (const event of Object.values(roomEvents)) {
-        const [hoursEventStart, minutesEventStart] = event.startEventTime.split(':').map(Number);
-        const [hoursEventStop, minutesEventStop] = event.stopEventTime.split(':').map(Number);
-        if (hoursSettingsEventStart === hoursEventStart && minutesSettingsEventStart === minutesEventStart &&
-            hoursSettingsEventStop === hoursEventStop && minutesSettingsEventStop === minutesEventStop) {
-            eventId = event.id;
-            console.log(eventId);
-            break;
-        }
-    }
 }
 
 function closeModal() {

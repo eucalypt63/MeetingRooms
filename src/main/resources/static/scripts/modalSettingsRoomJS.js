@@ -76,7 +76,7 @@ function saveChangesRoom() {
     closeRoomSetModal();
 }
 
-if(userRole === "admin") {
+if(userRole === "admin" && rooms.length !== 0) {
     setRoomBtn.addEventListener('click', openRoomSetModal);
     closeRoomBtnSet.addEventListener('click', closeRoomSetModal);
     deleteRoomBtn.addEventListener('click', deleteRoom)

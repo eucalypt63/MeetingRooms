@@ -9,7 +9,6 @@
     if (rooms.length === 0) {
         logoElement.textContent = "NoRooms";
         roomStatus = "inactive";
-        deleteEventBtn.style.display = 'none';
     } else {
         curRoom = rooms[0];
         logoElement.textContent = curRoom.roomName;
