@@ -40,15 +40,13 @@ public class EventService {
 
     @Transactional
     public void changeEvent(EventDTO eventDTO) {
-        entityManager.createQuery("UPDATE Event e SET e.eventDate = :newDate, " +
-                                     "e.startEventTime = :newStartEventTime," +
-                                     "e.stopEventTime = :newStopEventTime," +
-                                     "e.eventContent = :newEventContent WHERE e.id = :eventId")
-                .setParameter("newDate", Date.valueOf(eventDTO.getFormattedDate()))
-                .setParameter("newStartEventTime", eventDTO.getStartTime())
-                .setParameter("newStopEventTime", eventDTO.getEndTime())
-                .setParameter("newEventContent", eventDTO.getDescription())
-                .setParameter("eventId", eventDTO.getId())
-                .executeUpdate();
+        Event event = eventRepository.findById(eventDTO.getId()).orElse(null);
+        if (event != null) {
+            event.setEventDate(Date.valueOf(eventDTO.getFormattedDate()));
+            event.setStartEventTime(eventDTO.getStartTime());
+            event.setStopEventTime(eventDTO.getEndTime());
+            event.setEventContent(eventDTO.getDescription());
+            eventRepository.save(event);
+        }
     }
 }

@@ -29,9 +29,11 @@ public class RoomService {
 
     @Transactional
     public void changeRoom(RoomDTO roomDTO) {
-        entityManager.createQuery("UPDATE Room r SET r.status = :newStatus WHERE r.id = :roomId")
-                .setParameter("newStatus", roomDTO.getRoomStatus())
-                .setParameter("roomId", roomDTO.getId())
-                .executeUpdate();
+        Room room = roomRepository.findById(roomDTO.getId()).orElse(null);
+        if (room != null) {
+            room.setRoomName(roomDTO.getRoomName());
+            room.setStatus(roomDTO.getRoomStatus());
+            roomRepository.save(room);
+        }
     }
 }
