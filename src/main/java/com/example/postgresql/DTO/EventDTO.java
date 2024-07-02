@@ -2,7 +2,6 @@ package com.example.postgresql.DTO;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data

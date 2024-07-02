@@ -33,15 +33,8 @@ public class EventService {
         User user = (User) session.getAttribute("user");
         Room room = roomRepository.findByRoomName(eventDTO.getRoomName());
 
-        Event event = new Event();
-
-        event.setEventContent(eventDTO.getDescription());
-        event.setStartEventTime(eventDTO.getStartTime());
-        event.setStopEventTime(eventDTO.getEndTime());
-        event.setEventDate(Date.valueOf(eventDTO.getFormattedDate()));
-        event.setRoom(room);
-        event.setUser(user);
-
+        Event event = new Event(eventDTO.getDescription(), eventDTO.getStartTime(), eventDTO.getEndTime(),
+                                Date.valueOf(eventDTO.getFormattedDate()), user, room);
         eventRepository.save(event);
     }
 

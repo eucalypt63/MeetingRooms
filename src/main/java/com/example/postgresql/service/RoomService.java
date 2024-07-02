@@ -23,11 +23,7 @@ public class RoomService {
 
     @Transactional
     public void saveRoom(HttpSession session, RoomDTO roomDTO) {
-        Room room = new Room();
-
-        room.setRoomName(roomDTO.getRoomName());
-        room.setStatus(roomDTO.getRoomStatus());
-
+        Room room = new Room(roomDTO.getRoomName(), roomDTO.getRoomStatus());
         roomRepository.save(room);
     }
 

@@ -55,21 +55,12 @@ public class Calendar {
             Iterable<Room> rooms = roomRepository.findAll();
             model.addAttribute("roomListJson", new ObjectMapper().writeValueAsString(rooms));
 
-            UserDTO curUserDTO = new UserDTO();
-            curUserDTO.setId(curUser.getId());
-            curUserDTO.setUsername(curUser.getUsername());
-            curUserDTO.setRole(curUser.getRole());
+            UserDTO curUserDTO = new UserDTO(curUser.getId(), curUser.getUsername(), curUser.getRole());
             model.addAttribute("user", curUserDTO);
 
             Iterable<User> users = userRepository.findAll();
             List<UserDTO> userDTOs= new ArrayList<>();
-            for (User user : users) {
-                UserDTO uDTO = new UserDTO();
-                uDTO.setId(user.getId());
-                uDTO.setUsername(user.getUsername());
-                uDTO.setRole(user.getRole());
-                userDTOs.add(uDTO);
-            }
+            for (User user : users) { userDTOs.add(new UserDTO(user.getId(), user.getUsername(), user.getRole())); }
             model.addAttribute("userListJson", new ObjectMapper().writeValueAsString(userDTOs));
 
             return "calendar";
