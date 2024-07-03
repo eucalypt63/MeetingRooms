@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.sql.Date;
+import java.util.Optional;
 
 @Service
 public class EventService {
@@ -31,22 +32,31 @@ public class EventService {
     public void saveEvent(HttpSession session, EventDTO eventDTO) {
         System.out.println(eventDTO);
         User user = (User) session.getAttribute("user");
-        Room room = roomRepository.findByRoomName(eventDTO.getRoomName());
+        Optional<Room> roomOptional = Optional.ofNullable(roomRepository.findByRoomName(eventDTO.getRoomName()));
 
-        Event event = new Event(eventDTO.getDescription(), eventDTO.getStartTime(), eventDTO.getEndTime(),
-                                Date.valueOf(eventDTO.getFormattedDate()), user, room);
-        eventRepository.save(event);
+        if (roomOptional.isPresent()) {
+            Room room = roomOptional.get();
+            Event event = new Event(eventDTO.getDescription(), eventDTO.getStartTime(), eventDTO.getEndTime(),
+                    Date.valueOf(eventDTO.getFormattedDate()), user, room);
+            eventRepository.save(event);
+        }
+        else {
+            //Исключение "Комната не найдена"
+        }
     }
 
     @Transactional
     public void changeEvent(EventDTO eventDTO) {
-        Event event = eventRepository.findById(eventDTO.getId()).orElse(null);
-        if (event != null) {
+        Optional<Event> eventOptional = eventRepository.findById(eventDTO.getId());
+        if (eventOptional.isPresent()) {
+            Event event = eventOptional.get();
             event.setEventDate(Date.valueOf(eventDTO.getFormattedDate()));
             event.setStartEventTime(eventDTO.getStartTime());
             event.setStopEventTime(eventDTO.getEndTime());
             event.setEventContent(eventDTO.getDescription());
             eventRepository.save(event);
+        } else {
+            // Исключение: "Ошибка обновления события"
         }
     }
 }

@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Controller
 public class AuthorizationControl {
@@ -25,14 +27,19 @@ public class AuthorizationControl {
     public String login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
                         HttpSession session) {
-        User user = userRepository.findByUsername(username);
-
-        if (user != null && user.getPassword().equals(password)) { //Spring Security: доработать
-            session.setAttribute("user", user);
-            return "redirect:/calendar";
-        } else {
-            return "redirect:/login";
+        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username));//Spring Security: доработать
+        AtomicBoolean redirect = new AtomicBoolean(false);
+        if (user.isPresent()){
+            User u = user.get();
+            if (u.getPassword().equals(password)) {
+                session.setAttribute("user", u);
+                return "redirect:/calendar";
+            }
         }
+        else{
+            //Исключение: "Пользователь не найдет"
+        }
+        return "redirect:/login";
     }
 
     @GetMapping("/logout")

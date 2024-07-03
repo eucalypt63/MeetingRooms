@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class RoomService {
@@ -29,11 +30,14 @@ public class RoomService {
 
     @Transactional
     public void changeRoom(RoomDTO roomDTO) {
-        Room room = roomRepository.findById(roomDTO.getId()).orElse(null);
-        if (room != null) {
+        Optional<Room> roomOptional = roomRepository.findById(roomDTO.getId());
+        if (roomOptional.isPresent()) {
+            Room room = roomOptional.get();
             room.setRoomName(roomDTO.getRoomName());
             room.setStatus(roomDTO.getRoomStatus());
             roomRepository.save(room);
+        } else {
+            //Исключение: "Ошибка обновления комнаты"
         }
     }
 }
