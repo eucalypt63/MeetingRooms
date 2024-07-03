@@ -1,7 +1,10 @@
 package com.example.postgresql.controller;
 
+import com.example.postgresql.exception.RoomNotFoundException;
+import com.example.postgresql.exception.UserNotFoundException;
 import com.example.postgresql.model.User;
 import com.example.postgresql.repository.UserRepository;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,7 @@ public class AuthorizationControl {
         return "login";
     }
 
+    @SneakyThrows
     @PostMapping("/login")
     public String login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
@@ -32,12 +36,14 @@ public class AuthorizationControl {
         if (user.isPresent()){
             User u = user.get();
             if (u.getPassword().equals(password)) {
+                session.setAttribute("currentWeek", 0L);
+                session.setAttribute("currentRoomId", -1L);
                 session.setAttribute("user", u);
                 return "redirect:/calendar";
             }
         }
         else{
-            //Исключение: "Пользователь не найдет"
+            throw new UserNotFoundException(username);
         }
         return "redirect:/login";
     }

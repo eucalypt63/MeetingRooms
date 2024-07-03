@@ -88,6 +88,7 @@
                 }
             }
         }
+        saveWindowDate(currentWeek, curRoom.id)
         startTime = startTimeInput.value.padStart(5, '0') + ':00';
         endTime = endTimeInput.value.padStart(5, '0') + ':00';
         fetch('/calendarAddEvent', {

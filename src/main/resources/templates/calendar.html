@@ -179,6 +179,8 @@
 <div id="roomList" th:attr="data-events=${roomListJson}"></div>
 <div id="userList" th:attr="data-events=${userListJson}"></div>
 <div id="CurUser" th:attr="data-events=${user}"></div>
+<div id="currentRoomId" th:attr="current-room-id=${currentRoomId}"></div>
+<div id="currentWeek" th:attr="current-week=${currentWeek}"></div>
 <script src="scripts/modalAddEventJS.js"></script>
 <script src="scripts/paginationJS.js"></script>
 <script src="scripts/eventJS.js"></script>
@@ -186,6 +188,7 @@
 <script src="scripts/modalSettingsEventJS.js"></script>
 <script src="scripts/modalSettingsRoomJS.js"></script>
 <script src="scripts/roomsSelectorJS.js"></script>
+<script src="scripts/saveWindowDateJS.js"></script>
 <script>
     getDate(currentWeek);
     CurrentWeek(currentWeek);

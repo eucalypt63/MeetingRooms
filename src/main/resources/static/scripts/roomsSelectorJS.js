@@ -17,9 +17,12 @@
         settingsBtns.remove();
         addEventBtnSelect.remove();
     } else {
-        curRoom = rooms[0];
+        const currentRoomId = parseInt(document.getElementById("currentRoomId").getAttribute("current-room-id"));
+        if (currentRoomId === -1) { curRoom = rooms[0]; }
+        else { curRoom = rooms.find(room => room.id === currentRoomId); }
+
         logoElement.textContent = curRoom.roomName;
-        roomStatus = rooms[0].status;
+        roomStatus = curRoom.status;
         if (roomStatus === "inactive") {
             settingsBtns.remove();
             addEventBtnSelect.remove();
@@ -77,6 +80,7 @@
                   parentElement.insertBefore(addEventBtn, parentElement.firstChild);
               }
           }
+          callSave(curRoom.id);
       });
       roomList.appendChild(roomItem);
     });

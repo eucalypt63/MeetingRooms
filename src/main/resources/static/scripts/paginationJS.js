@@ -1,8 +1,7 @@
     const currentWeekElement = document.querySelector('.current-week');
     const prevWeekBtn = document.querySelector('.prev-week');
     const nextWeekBtn = document.querySelector('.next-week');
-    let currentWeek = 0;
-
+    let currentWeek = document.getElementById("currentWeek").getAttribute("current-week");
     function CurrentWeek(weekOffset) {
       const today = new Date();
 
@@ -23,6 +22,7 @@
         CurrentWeek(currentWeek);
         getDate(currentWeek);
         getEvents(currentWeek);
+        saveWindowDate(currentWeek, curRoom.id);
     });
 
     nextWeekBtn.addEventListener('click', () => {
@@ -30,6 +30,7 @@
         CurrentWeek(currentWeek);
         getDate(currentWeek);
         getEvents(currentWeek);
+        saveWindowDate(currentWeek, curRoom.id);
     });
 
     function getDate(weekOffset) {

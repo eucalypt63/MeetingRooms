@@ -1,11 +1,14 @@
 package com.example.postgresql.service;
 
 import com.example.postgresql.DTO.EventDTO;
+import com.example.postgresql.exception.EventNotFoundException;
+import com.example.postgresql.exception.RoomNotFoundException;
 import com.example.postgresql.model.Event;
 import com.example.postgresql.model.Room;
 import com.example.postgresql.model.User;
 import com.example.postgresql.repository.EventRepository;
 import com.example.postgresql.repository.RoomRepository;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -28,35 +31,46 @@ public class EventService {
         this.roomRepository = roomRepository;
     }
 
+    @SneakyThrows
     @Transactional
     public void saveEvent(HttpSession session, EventDTO eventDTO) {
         System.out.println(eventDTO);
         User user = (User) session.getAttribute("user");
         Optional<Room> roomOptional = Optional.ofNullable(roomRepository.findByRoomName(eventDTO.getRoomName()));
-
-        if (roomOptional.isPresent()) {
-            Room room = roomOptional.get();
-            Event event = new Event(eventDTO.getDescription(), eventDTO.getStartTime(), eventDTO.getEndTime(),
-                    Date.valueOf(eventDTO.getFormattedDate()), user, room);
-            eventRepository.save(event);
-        }
-        else {
-            //Исключение "Комната не найдена"
-        }
+        roomOptional.ifPresentOrElse(
+                room -> {
+                    Event event = new Event(eventDTO.getDescription(), eventDTO.getStartTime(), eventDTO.getEndTime(),
+                            Date.valueOf(eventDTO.getFormattedDate()), user, room);
+                    eventRepository.save(event);
+                },
+                () -> {
+                    try {
+                        throw new RoomNotFoundException(eventDTO.getRoomName());
+                    } catch (RoomNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
     }
 
     @Transactional
     public void changeEvent(EventDTO eventDTO) {
         Optional<Event> eventOptional = eventRepository.findById(eventDTO.getId());
-        if (eventOptional.isPresent()) {
-            Event event = eventOptional.get();
-            event.setEventDate(Date.valueOf(eventDTO.getFormattedDate()));
-            event.setStartEventTime(eventDTO.getStartTime());
-            event.setStopEventTime(eventDTO.getEndTime());
-            event.setEventContent(eventDTO.getDescription());
-            eventRepository.save(event);
-        } else {
-            // Исключение: "Ошибка обновления события"
-        }
+        eventOptional.ifPresentOrElse(
+                event -> {
+                    event.setEventDate(Date.valueOf(eventDTO.getFormattedDate()));
+                    event.setStartEventTime(eventDTO.getStartTime());
+                    event.setStopEventTime(eventDTO.getEndTime());
+                    event.setEventContent(eventDTO.getDescription());
+                    eventRepository.save(event);
+                },
+                () -> {
+                    try {
+                        throw new EventNotFoundException(eventDTO.getId());
+                    } catch (EventNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
     }
 }

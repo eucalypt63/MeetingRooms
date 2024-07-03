@@ -3,6 +3,7 @@ package com.example.postgresql.controller;
 import com.example.postgresql.DTO.EventDTO;
 import com.example.postgresql.DTO.RoomDTO;
 import com.example.postgresql.DTO.UserDTO;
+import com.example.postgresql.DTO.WindowDTO;
 import com.example.postgresql.model.Event;
 import com.example.postgresql.model.Room;
 import com.example.postgresql.model.User;
@@ -19,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -48,7 +50,13 @@ public class Calendar {
     @GetMapping("/calendar")
     public String showCalendar(HttpSession session, Model model) throws JsonProcessingException {
         User curUser = (User) session.getAttribute("user");
-        if (curUser != null) {
+        if (curUser != null) {//!!!!!
+            Long currentWeek = (Long) session.getAttribute("currentWeek");
+            model.addAttribute("currentWeek", currentWeek);
+
+            Long currentRoomId = (Long) session.getAttribute("currentRoomId");
+            model.addAttribute("currentRoomId", currentRoomId);
+
             Iterable<Event> events = eventRepository.findAll();
             model.addAttribute("eventListJson", new ObjectMapper().writeValueAsString(events));
 
@@ -78,8 +86,8 @@ public class Calendar {
     }
 
     @PostMapping("/calendarAddRoom")
-    public ResponseEntity<Void> createRoom(HttpSession session, @RequestBody RoomDTO roomDTO) {
-        roomService.saveRoom(session, roomDTO);
+    public ResponseEntity<Void> createRoom(@RequestBody RoomDTO roomDTO) {
+        roomService.saveRoom(roomDTO);
         return ResponseEntity.ok().build();
     }
 
@@ -108,6 +116,13 @@ public class Calendar {
         System.out.println(eventDTO);
 
         eventService.changeEvent(eventDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/saveWindowDate")
+    public ResponseEntity<Void> saveWindowDate(HttpSession session,  @RequestBody WindowDTO window) {
+        session.setAttribute("currentWeek", window.getCurrentWeek());
+        session.setAttribute("currentRoomId", window.getCurrentRoomId());
         return ResponseEntity.ok().build();
     }
 }

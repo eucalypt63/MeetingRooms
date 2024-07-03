@@ -70,7 +70,6 @@
               user: event.user.id,
               room: event.room.id
           });
-          console.log(eventDict[roomName][formattedDate]);
       });
 
       return eventDict;
@@ -104,10 +103,8 @@
            eventElement.scrollTop = 0;
        });
 
-         const startTimeString = `${startHour}:${Math.round(startMinutes).toString().padStart(2, '0')}`;
-         const endTimeString = `${endHour}:${Math.round(endMinutes).toString().padStart(2, '0')}`;
-
-        console.log(UserDict[userEventId]);//
+       const startTimeString = `${startHour}:${Math.round(startMinutes).toString().padStart(2, '0')}`;
+       const endTimeString = `${endHour}:${Math.round(endMinutes).toString().padStart(2, '0')}`;
        eventElement.style.whiteSpace = 'pre-line';
        eventElement.textContent = `Time: ${startTimeString} - ${endTimeString}
                                    Organizer: ${UserDict[userEventId].username}\n

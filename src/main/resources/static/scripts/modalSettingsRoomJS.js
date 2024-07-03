@@ -25,7 +25,7 @@ function clearInputFields() {
 }
 
 function deleteRoom() {
-    console.log(curRoomSet);
+    saveWindowDate(currentWeek, -1);
     fetch('/calendarDeleteRoom', {
         method: 'POST',
         headers: {
@@ -53,6 +53,7 @@ function saveChangesRoom() {
     const id = curRoomSet.id;
     const roomName = curRoomSet.roomName;
     const roomStatus = roomStatusSet.value;
+    saveWindowDate(currentWeek, id);
     fetch('/calendarChangesRoom', {
         method: 'POST',
         headers: {

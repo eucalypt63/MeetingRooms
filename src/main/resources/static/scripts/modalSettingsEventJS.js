@@ -31,6 +31,7 @@ function clearInputFields() {
 }
 
 function deleteEvent() {
+    saveWindowDate(currentWeek, curRoom.id)
     fetch('/calendarDeleteEvent', {
         method: 'POST',
         headers: {
@@ -108,6 +109,7 @@ function saveChangesEvent() {
             }
         }
     }
+    saveWindowDate(currentWeek, curRoom.id)
     startTime = startTime.padStart(5, '0') + ':00';
     endTime = endTime.padStart(5, '0') + ':00';
     fetch('/calendarChangesEvent', {
