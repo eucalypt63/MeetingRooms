@@ -111,6 +111,12 @@
     text-transform: capitalize;
     transition: all 0.5s ease 0s;
 }
+.form-group {
+    display: flex;
+}
+.form-group-help {
+    display: flex;
+}
 @media only screen and (max-width: 479px){
     .form-horizontal .form-group{
         padding: 0 25px;

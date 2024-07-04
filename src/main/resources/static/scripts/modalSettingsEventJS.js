@@ -112,6 +112,9 @@ function saveChangesEvent() {
     saveWindowDate(currentWeek, curRoom.id)
     startTime = startTime.padStart(5, '0') + ':00';
     endTime = endTime.padStart(5, '0') + ':00';
+    if (endTime === '24:00:00') {
+        endTime = '23:59:59';
+    }
     fetch('/calendarChangesEvent', {
         method: 'POST',
         headers: {

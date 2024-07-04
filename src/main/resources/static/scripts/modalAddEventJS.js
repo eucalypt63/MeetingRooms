@@ -91,6 +91,9 @@
         saveWindowDate(currentWeek, curRoom.id)
         startTime = startTimeInput.value.padStart(5, '0') + ':00';
         endTime = endTimeInput.value.padStart(5, '0') + ':00';
+        if (endTime === '24:00:00') {
+            endTime = '23:59:59';
+        }
         fetch('/calendarAddEvent', {
             method: 'POST',
             headers: {

@@ -4,12 +4,12 @@ import com.example.postgresql.DTO.RoomDTO;
 import com.example.postgresql.exception.RoomNotFoundException;
 import com.example.postgresql.model.Room;
 import com.example.postgresql.repository.RoomRepository;
-import lombok.SneakyThrows;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
@@ -41,11 +41,8 @@ public class RoomService {
                     roomRepository.save(room);
                 },
                 () -> {
-                    try {
-                        throw new RoomNotFoundException(roomDTO.getId());
-                    } catch (RoomNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "RoomNotFoundException: ",
+                                                      new RoomNotFoundException(roomDTO.getId()));
                 }
         );
     }

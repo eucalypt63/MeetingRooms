@@ -2,7 +2,7 @@
 
     const eventListElement = document.getElementById('eventList');
     const eventList = JSON.parse(eventListElement.getAttribute('data-events'));
-    //eventListElement.remove();
+    eventListElement.remove();
 
     const roomListJson = document.getElementById('roomList').dataset.events;
     const rooms = JSON.parse(roomListJson);
@@ -22,11 +22,9 @@
     document.getElementById('CurUser').remove();
 
     const idMatch = curUser.match(/id=(\d+)/);
-    const usernameMatch = curUser.match(/username=(\w+)/);
     const roleMatch = curUser.match(/role=(\w+)/);
 
     const userId = parseInt(idMatch[1]);
-    const userName = usernameMatch[1];
     const userRole = roleMatch[1];
 
     const eventDict = createEventDictionary(eventList, rooms);
@@ -60,14 +58,17 @@
         }
 
         const startTime = `${event.startEventTime.hour.toString().padStart(2, '0')}:${event.startEventTime.minute.toString().padStart(2, '0')}`;
-        const endTime = `${event.stopEventTime.hour.toString().padStart(2, '0')}:${event.stopEventTime.minute.toString().padStart(2, '0')}`;
+        let endTime;
+        if (event.stopEventTime.second !== 59) {
+            endTime = `${event.stopEventTime.hour.toString().padStart(2, '0')}:${event.stopEventTime.minute.toString().padStart(2, '0')}`;
+        } else {endTime = "24:00"}
 
           eventDict[roomName][formattedDate].push({
               id: event.id,
               eventContent: event.eventContent,
               startEventTime: startTime,
               stopEventTime: endTime,
-              user: event.user.id,
+              user: event.userId,
               room: event.room.id
           });
       });

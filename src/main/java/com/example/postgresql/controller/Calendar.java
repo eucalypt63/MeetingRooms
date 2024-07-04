@@ -1,9 +1,6 @@
 package com.example.postgresql.controller;
 
-import com.example.postgresql.DTO.EventDTO;
-import com.example.postgresql.DTO.RoomDTO;
-import com.example.postgresql.DTO.UserDTO;
-import com.example.postgresql.DTO.WindowDTO;
+import com.example.postgresql.DTO.*;
 import com.example.postgresql.model.Event;
 import com.example.postgresql.model.Room;
 import com.example.postgresql.model.User;
@@ -13,6 +10,10 @@ import com.example.postgresql.service.RoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import com.example.postgresql.repository.EventRepository;
 import com.example.postgresql.repository.UserRepository;
@@ -20,12 +21,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller
 public class Calendar {
@@ -49,39 +51,54 @@ public class Calendar {
 
     @GetMapping("/calendar")
     public String showCalendar(HttpSession session, Model model) throws JsonProcessingException {
-        User curUser = (User) session.getAttribute("user");
-        if (curUser != null) {//!!!!!
-            Long currentWeek = (Long) session.getAttribute("currentWeek");
-            model.addAttribute("currentWeek", currentWeek);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserDTO curUserDTO = new UserDTO(
+                userRepository.findByUsername(userDetails.getUsername()).getId(),
+                userDetails.getUsername(),
+                String.join(",", userDetails.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toList())
+        );
+        System.out.println(curUserDTO);
 
-            Long currentRoomId = (Long) session.getAttribute("currentRoomId");
-            model.addAttribute("currentRoomId", currentRoomId);
+        Long currentWeek = (Long) session.getAttribute("currentWeek");
+        model.addAttribute("currentWeek", currentWeek);
 
-            Iterable<Event> events = eventRepository.findAll();
-            model.addAttribute("eventListJson", new ObjectMapper().writeValueAsString(events));
+        Long currentRoomId = (Long) session.getAttribute("currentRoomId");
+        model.addAttribute("currentRoomId", currentRoomId);
 
-            Iterable<Room> rooms = roomRepository.findAll();
-            model.addAttribute("roomListJson", new ObjectMapper().writeValueAsString(rooms));
+        Iterable<Event> events = eventRepository.findAll();
+        List<EventResponseDTO> eventDTOs = StreamSupport.stream(events.spliterator(), false)
+                .map(event -> new EventResponseDTO(
+                        event.getId(),
+                        event.getEventContent(),
+                        event.getStartEventTime(),
+                        event.getStopEventTime(),
+                        event.getEventDate(),
+                        event.getUser().getId(),
+                        event.getRoom()
+                ))
+                .collect(Collectors.toList());
+        model.addAttribute("eventListJson", new ObjectMapper().writeValueAsString(eventDTOs));
 
-            UserDTO curUserDTO = new UserDTO(curUser.getId(), curUser.getUsername(), curUser.getRole());
-            model.addAttribute("user", curUserDTO);
+        Iterable<Room> rooms = roomRepository.findAll();
+        model.addAttribute("roomListJson", new ObjectMapper().writeValueAsString(rooms));
 
-            Iterable<User> users = userRepository.findAll();
-            List<UserDTO> userDTOs= new ArrayList<>();
-            for (User user : users) { userDTOs.add(new UserDTO(user.getId(), user.getUsername(), user.getRole())); }
-            model.addAttribute("userListJson", new ObjectMapper().writeValueAsString(userDTOs));
+        model.addAttribute("user", curUserDTO);
 
-            return "calendar";
-        }
-        else {
-            return "redirect:/login";
-        }
+        Iterable<User> users = userRepository.findAll();
+        List<UserDTO> userDTOs= new ArrayList<>();
+        for (User user : users) { userDTOs.add(new UserDTO(user.getId(), user.getUsername(), user.getRole())); }
+        model.addAttribute("userListJson", new ObjectMapper().writeValueAsString(userDTOs));
+
+        return "calendar";
     }
 
     @PostMapping("/calendarAddEvent")
-    public ResponseEntity<Void> createEvent(HttpSession session, @RequestBody EventDTO eventDTO) {
-        System.out.println(eventDTO);
-        eventService.saveEvent(session, eventDTO);
+    public ResponseEntity<Void> createEvent(@RequestBody EventRequestDTO eventRequestDTO) {
+        System.out.println(eventRequestDTO);
+        eventService.saveEvent(eventRequestDTO);
         return ResponseEntity.ok().build();
     }
 
@@ -112,10 +129,10 @@ public class Calendar {
     }
 
     @PostMapping("/calendarChangesEvent")
-    public ResponseEntity<Void> changeEvent(@RequestBody EventDTO eventDTO) {
-        System.out.println(eventDTO);
+    public ResponseEntity<Void> changeEvent(@RequestBody EventRequestDTO eventRequestDTO) {
+        System.out.println(eventRequestDTO);
 
-        eventService.changeEvent(eventDTO);
+        eventService.changeEvent(eventRequestDTO);
         return ResponseEntity.ok().build();
     }
 

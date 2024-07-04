@@ -19,7 +19,12 @@
     } else {
         const currentRoomId = parseInt(document.getElementById("currentRoomId").getAttribute("current-room-id"));
         if (currentRoomId === -1) { curRoom = rooms[0]; }
-        else { curRoom = rooms.find(room => room.id === currentRoomId); }
+        else {
+            curRoom = rooms.find(room => room.id === currentRoomId);
+            if (!curRoom) {
+                curRoom = rooms[0];
+            }
+        }
 
         logoElement.textContent = curRoom.roomName;
         roomStatus = curRoom.status;
